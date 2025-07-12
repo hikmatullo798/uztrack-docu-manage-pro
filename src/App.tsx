@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,11 +10,21 @@ import Documents from "./pages/Documents";
 import Trucks from "./pages/Trucks";
 import EurasianRoute from "./pages/EurasianRoute";
 import CriticalAlerts from "./pages/CriticalAlerts";
+import Statistics from "./pages/Statistics";
+import Notifications from "./pages/Notifications";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
+const App = () => {
+  useEffect(() => {
+    // Initialize theme on app start
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    document.documentElement.classList.add(savedTheme);
+  }, []);
+
+  return (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
@@ -24,11 +35,11 @@ const App = () => (
             <Route index element={<Dashboard />} />
             <Route path="documents" element={<Documents />} />
             <Route path="alerts" element={<CriticalAlerts />} />
-            <Route path="statistics" element={<Dashboard />} />
+            <Route path="statistics" element={<Statistics />} />
             <Route path="trucks" element={<Trucks />} />
             <Route path="eurasian" element={<EurasianRoute />} />
-            <Route path="notifications" element={<Dashboard />} />
-            <Route path="settings" element={<Dashboard />} />
+            <Route path="notifications" element={<Notifications />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
@@ -36,6 +47,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
-);
+  );
+};
 
 export default App;
