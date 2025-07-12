@@ -24,8 +24,11 @@ export default {
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				surface: 'hsl(var(--surface))',
+				'surface-elevated': 'hsl(var(--surface-elevated))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
+					glow: 'hsl(var(--primary-glow))',
 					foreground: 'hsl(var(--primary-foreground))'
 				},
 				secondary: {
@@ -50,7 +53,26 @@ export default {
 				},
 				card: {
 					DEFAULT: 'hsl(var(--card))',
+					elevated: 'hsl(var(--card-elevated))',
 					foreground: 'hsl(var(--card-foreground))'
+				},
+				// Alert system colors
+				alert: {
+					critical: 'hsl(var(--alert-critical))',
+					'critical-foreground': 'hsl(var(--alert-critical-foreground))',
+					warning: 'hsl(var(--alert-warning))',
+					'warning-foreground': 'hsl(var(--alert-warning-foreground))',
+					safe: 'hsl(var(--alert-safe))',
+					'safe-foreground': 'hsl(var(--alert-safe-foreground))',
+					expired: 'hsl(var(--alert-expired))',
+					'expired-foreground': 'hsl(var(--alert-expired-foreground))'
+				},
+				// Status colors
+				status: {
+					active: 'hsl(var(--status-active))',
+					maintenance: 'hsl(var(--status-maintenance))',
+					inactive: 'hsl(var(--status-inactive))',
+					sold: 'hsl(var(--status-sold))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',

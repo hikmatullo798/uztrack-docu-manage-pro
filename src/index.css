@@ -2,57 +2,88 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* UZTRUCK Document Management System Design Tokens */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Background and surfaces */
+    --background: 240 10% 3.9%;
+    --surface: 240 10% 6%;
+    --surface-elevated: 240 8% 8%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Card system */
+    --card: 240 10% 6%;
+    --card-elevated: 240 8% 8%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Popover system */
+    --popover: 240 10% 6%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Brand colors - Uzbekistan inspired */
+    --primary: 201 96% 32%;
+    --primary-glow: 201 100% 45%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 240 10% 15%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 48 96% 53%;
+    --accent-foreground: 240 10% 3.9%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Alert system colors */
+    --alert-critical: 0 84% 60%;
+    --alert-critical-foreground: 0 0% 98%;
+    --alert-warning: 48 96% 53%;
+    --alert-warning-foreground: 240 10% 3.9%;
+    --alert-safe: 142 76% 36%;
+    --alert-safe-foreground: 0 0% 98%;
+    --alert-expired: 240 10% 3.9%;
+    --alert-expired-foreground: 0 0% 98%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Status colors */
+    --status-active: 142 76% 36%;
+    --status-maintenance: 48 96% 53%;
+    --status-inactive: 0 0% 45%;
+    --status-sold: 240 10% 20%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Semantic colors */
+    --muted: 240 5% 25%;
+    --muted-foreground: 240 5% 64.9%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
 
-    --radius: 0.5rem;
+    --border: 240 6% 20%;
+    --input: 240 6% 20%;
+    --ring: 201 96% 32%;
 
-    --sidebar-background: 0 0% 98%;
+    --radius: 0.75rem;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-alert: linear-gradient(135deg, hsl(var(--alert-critical)), hsl(var(--alert-warning)));
+    --gradient-status: linear-gradient(135deg, hsl(var(--alert-safe)), hsl(var(--primary-glow)));
 
-    --sidebar-primary: 240 5.9% 10%;
+    /* Shadows */
+    --shadow-card: 0 4px 6px -1px hsl(var(--primary) / 0.1), 0 2px 4px -1px hsl(var(--primary) / 0.06);
+    --shadow-alert: 0 10px 30px -10px hsl(var(--alert-critical) / 0.3);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.2);
 
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    /* Sidebar */
+    --sidebar-background: 240 10% 6%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 201 96% 32%;
     --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 240 8% 8%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 6% 20%;
+    --sidebar-ring: 201 96% 32%;
   }
 
   .dark {
@@ -100,6 +131,109 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
+}
+
+@layer components {
+  /* Alert level styles */
+  .alert-critical {
+    @apply bg-red-600 text-white border-red-500;
+    animation: pulse 2s infinite;
+  }
+
+  .alert-warning {
+    @apply bg-yellow-500 text-black border-yellow-400;
+  }
+
+  .alert-safe {
+    @apply bg-green-600 text-white border-green-500;
+  }
+
+  .alert-expired {
+    @apply bg-black text-white border-gray-800;
+    animation: blink 1s infinite;
+  }
+
+  /* Card variants */
+  .card-elevated {
+    @apply bg-card-elevated shadow-lg;
+  }
+
+  .card-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* Status indicators */
+  .status-active {
+    @apply bg-green-600 text-white;
+  }
+
+  .status-maintenance {
+    @apply bg-yellow-500 text-black;
+  }
+
+  .status-inactive {
+    @apply bg-gray-500 text-white;
+  }
+
+  .status-sold {
+    @apply bg-gray-700 text-white;
+  }
+
+  /* Gradients */
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-alert {
+    background: var(--gradient-alert);
+  }
+
+  .gradient-status {
+    background: var(--gradient-status);
+  }
+
+  /* Transitions */
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  .transition-spring {
+    transition: var(--transition-spring);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
 }
