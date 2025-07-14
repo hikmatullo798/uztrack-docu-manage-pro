@@ -18,15 +18,15 @@ import { TruckStatus } from "@/types";
 const getStatusColor = (status: TruckStatus) => {
   switch (status) {
     case 'active':
-      return 'bg-green-600 text-white';
+      return 'bg-green-100 text-green-700 border border-green-200';
     case 'maintenance':
-      return 'bg-yellow-500 text-black';
+      return 'bg-amber-100 text-amber-700 border border-amber-200';
     case 'sold':
-      return 'bg-gray-600 text-white';
+      return 'bg-gray-100 text-gray-700 border border-gray-200';
     case 'inactive':
-      return 'bg-red-600 text-white';
+      return 'bg-red-100 text-red-700 border border-red-200';
     default:
-      return 'bg-gray-500 text-white';
+      return 'bg-gray-100 text-gray-600 border border-gray-200';
   }
 };
 
@@ -89,50 +89,50 @@ export default function Trucks() {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-primary text-primary-foreground">
+        <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm opacity-90">Jami mashinalar</p>
-                <p className="text-2xl font-bold">{trucks.length}</p>
+                <p className="text-sm text-blue-600">Jami mashinalar</p>
+                <p className="text-2xl font-bold text-blue-700">{trucks.length}</p>
               </div>
-              <Truck className="w-8 h-8 opacity-80" />
+              <Truck className="w-8 h-8 text-blue-500" />
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-green-600 text-white">
+        <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm opacity-90">Faol mashinalar</p>
-                <p className="text-2xl font-bold">{activeTrucks}</p>
+                <p className="text-sm text-green-600">Faol mashinalar</p>
+                <p className="text-2xl font-bold text-green-700">{activeTrucks}</p>
               </div>
-              <Truck className="w-8 h-8 opacity-80" />
+              <Truck className="w-8 h-8 text-green-500" />
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-red-600 text-white">
+        <Card className="bg-gradient-to-r from-red-50 to-red-100 border-red-200">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm opacity-90">Kritik hujjatlar</p>
-                <p className="text-2xl font-bold">{totalCritical}</p>
+                <p className="text-sm text-red-600">Kritik hujjatlar</p>
+                <p className="text-2xl font-bold text-red-700">{totalCritical}</p>
               </div>
-              <AlertTriangle className="w-8 h-8 opacity-80" />
+              <AlertTriangle className="w-8 h-8 text-red-500" />
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-yellow-500 text-black">
+        <Card className="bg-gradient-to-r from-amber-50 to-amber-100 border-amber-200">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm opacity-90">Ta'mirdagi mashinalar</p>
-                <p className="text-2xl font-bold">{maintenanceTrucks}</p>
+                <p className="text-sm text-amber-600">Ta'mirdagi mashinalar</p>
+                <p className="text-2xl font-bold text-amber-700">{maintenanceTrucks}</p>
               </div>
-              <Wrench className="w-8 h-8 opacity-80" />
+              <Wrench className="w-8 h-8 text-amber-500" />
             </div>
           </CardContent>
         </Card>
@@ -215,19 +215,19 @@ export default function Trucks() {
                 <div className="space-y-3">
                   <h4 className="font-semibold text-sm">Hujjatlar holati:</h4>
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="text-center p-2 bg-red-600 text-white rounded">
+                    <div className="text-center p-2 bg-red-50 text-red-700 border border-red-200 rounded">
                       <p className="text-lg font-bold">{truck.expiredDocuments}</p>
                       <p className="text-xs">Tugagan</p>
                     </div>
-                    <div className="text-center p-2 bg-red-500 text-white rounded">
+                    <div className="text-center p-2 bg-red-100 text-red-700 border border-red-200 rounded">
                       <p className="text-lg font-bold">{truck.criticalDocuments}</p>
                       <p className="text-xs">Kritik</p>
                     </div>
-                    <div className="text-center p-2 bg-yellow-500 text-black rounded">
+                    <div className="text-center p-2 bg-amber-50 text-amber-700 border border-amber-200 rounded">
                       <p className="text-lg font-bold">{truck.warningDocuments}</p>
                       <p className="text-xs">Ogohlantiruv</p>
                     </div>
-                    <div className="text-center p-2 bg-green-600 text-white rounded">
+                    <div className="text-center p-2 bg-green-50 text-green-700 border border-green-200 rounded">
                       <p className="text-lg font-bold">{truck.safeDocuments}</p>
                       <p className="text-xs">Xavfsiz</p>
                     </div>
@@ -236,14 +236,14 @@ export default function Trucks() {
 
                 {/* Critical Alerts */}
                 {(truck.expiredDocuments > 0 || truck.criticalDocuments > 0) && (
-                  <div className="bg-red-50 border-l-4 border-red-600 p-3 rounded">
+                  <div className="bg-red-50 border border-red-200 p-3 rounded">
                     <div className="flex items-center space-x-2">
-                      <AlertTriangle className="w-4 h-4 text-red-600" />
-                      <p className="text-sm font-medium text-red-800">
+                      <AlertTriangle className="w-4 h-4 text-red-500" />
+                      <p className="text-sm font-medium text-red-700">
                         Tezkor harakat talab qilinadi!
                       </p>
                     </div>
-                    <p className="text-xs text-red-700 mt-1">
+                    <p className="text-xs text-red-600 mt-1">
                       {truck.expiredDocuments + truck.criticalDocuments} ta hujjat diqqat talab qiladi
                     </p>
                   </div>

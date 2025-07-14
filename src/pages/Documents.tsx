@@ -18,15 +18,15 @@ import { Document, AlertLevel } from "@/types";
 const getAlertLevelColor = (level: AlertLevel) => {
   switch (level) {
     case 'critical':
-      return 'bg-red-600 text-white';
+      return 'bg-red-100 text-red-700 border border-red-200';
     case 'warning':
-      return 'bg-yellow-500 text-black';
+      return 'bg-amber-100 text-amber-700 border border-amber-200';
     case 'expired':
-      return 'bg-black text-white animate-pulse';
+      return 'bg-gray-100 text-gray-700 border border-gray-200';
     case 'safe':
-      return 'bg-green-600 text-white';
+      return 'bg-green-100 text-green-700 border border-green-200';
     default:
-      return 'bg-gray-500 text-white';
+      return 'bg-gray-100 text-gray-600 border border-gray-200';
   }
 };
 
@@ -71,50 +71,50 @@ export default function Documents() {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-red-600 text-white">
+        <Card className="bg-gradient-to-r from-red-50 to-red-100 border-red-200">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm opacity-90">Kritik</p>
-                <p className="text-2xl font-bold">6</p>
+                <p className="text-sm text-red-600">Kritik</p>
+                <p className="text-2xl font-bold text-red-700">6</p>
               </div>
-              <AlertTriangle className="w-8 h-8 opacity-80" />
+              <AlertTriangle className="w-8 h-8 text-red-500" />
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-yellow-500 text-black">
+        <Card className="bg-gradient-to-r from-amber-50 to-amber-100 border-amber-200">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm opacity-90">Ogohlantiruv</p>
-                <p className="text-2xl font-bold">7</p>
+                <p className="text-sm text-amber-600">Ogohlantiruv</p>
+                <p className="text-2xl font-bold text-amber-700">7</p>
               </div>
-              <Calendar className="w-8 h-8 opacity-80" />
+              <Calendar className="w-8 h-8 text-amber-500" />
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-black text-white">
+        <Card className="bg-gradient-to-r from-gray-50 to-gray-100 border-gray-200">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm opacity-90">Muddati tugagan</p>
-                <p className="text-2xl font-bold">6</p>
+                <p className="text-sm text-gray-600">Muddati tugagan</p>
+                <p className="text-2xl font-bold text-gray-700">6</p>
               </div>
-              <FileText className="w-8 h-8 opacity-80" />
+              <FileText className="w-8 h-8 text-gray-500" />
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-green-600 text-white">
+        <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm opacity-90">Xavfsiz</p>
-                <p className="text-2xl font-bold">16</p>
+                <p className="text-sm text-green-600">Xavfsiz</p>
+                <p className="text-2xl font-bold text-green-700">16</p>
               </div>
-              <FileText className="w-8 h-8 opacity-80" />
+              <FileText className="w-8 h-8 text-green-500" />
             </div>
           </CardContent>
         </Card>

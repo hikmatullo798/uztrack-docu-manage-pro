@@ -11,13 +11,13 @@ export function StatusBadge({ type, status, className }: StatusBadgeProps) {
   const getAlertStyles = (level: AlertLevel) => {
     switch (level) {
       case 'critical':
-        return 'bg-destructive text-destructive-foreground animate-pulse';
+        return 'bg-red-50 text-red-700 border border-red-200';
       case 'warning':
-        return 'bg-amber-500 text-white';
+        return 'bg-amber-50 text-amber-700 border border-amber-200';
       case 'expired':
-        return 'bg-gray-900 text-white';
+        return 'bg-gray-50 text-gray-700 border border-gray-200';
       case 'safe':
-        return 'bg-green-600 text-white';
+        return 'bg-green-50 text-green-700 border border-green-200';
       default:
         return 'bg-secondary text-secondary-foreground';
     }
@@ -26,13 +26,13 @@ export function StatusBadge({ type, status, className }: StatusBadgeProps) {
   const getTruckStyles = (status: TruckStatus) => {
     switch (status) {
       case 'active':
-        return 'bg-green-600 text-white';
+        return 'bg-green-50 text-green-700 border border-green-200';
       case 'maintenance':
-        return 'bg-amber-500 text-white';
+        return 'bg-amber-50 text-amber-700 border border-amber-200';
       case 'sold':
-        return 'bg-gray-600 text-white';
+        return 'bg-gray-50 text-gray-700 border border-gray-200';
       case 'inactive':
-        return 'bg-destructive text-destructive-foreground';
+        return 'bg-red-50 text-red-700 border border-red-200';
       default:
         return 'bg-secondary text-secondary-foreground';
     }

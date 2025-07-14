@@ -6,92 +6,98 @@
 
 @layer base {
   :root {
-    /* Clean minimal backgrounds */
-    --background: 0 0% 100%;
-    --foreground: 220 13% 18%;
+    /* Ultra-minimal light backgrounds */
+    --background: 0 0% 99%;
+    --foreground: 210 11% 15%;
     
-    /* Pure card system */
+    /* Soft card system */
     --card: 0 0% 100%;
-    --card-foreground: 220 13% 18%;
+    --card-foreground: 210 11% 15%;
     
-    /* Subtle surfaces */
-    --muted: 220 13% 97%;
-    --muted-foreground: 220 9% 46%;
+    /* Gentle surfaces */
+    --muted: 210 11% 98%;
+    --muted-foreground: 210 9% 55%;
     
-    /* Primary brand - Clean blue */
-    --primary: 221 83% 53%;
-    --primary-foreground: 0 0% 98%;
+    /* Soft primary - Light blue */
+    --primary: 210 100% 56%;
+    --primary-foreground: 0 0% 100%;
     
     /* Minimal secondary */
-    --secondary: 220 13% 97%;
-    --secondary-foreground: 220 13% 18%;
+    --secondary: 210 11% 98%;
+    --secondary-foreground: 210 11% 15%;
     
-    /* Clean accent */
-    --accent: 220 13% 97%;
-    --accent-foreground: 220 13% 18%;
+    /* Subtle accent */
+    --accent: 210 11% 97%;
+    --accent-foreground: 210 11% 15%;
     
-    /* Alert system - Simplified */
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 98%;
+    /* Gentle alert colors */
+    --destructive: 0 65% 65%;
+    --destructive-foreground: 0 0% 100%;
     
-    /* Minimal borders */
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 221 83% 53%;
+    /* Light borders */
+    --border: 210 12% 93%;
+    --input: 210 12% 96%;
+    --ring: 210 100% 56%;
     
     /* Popover system */
     --popover: 0 0% 100%;
-    --popover-foreground: 220 13% 18%;
+    --popover-foreground: 210 11% 15%;
     
     /* Clean radius */
     --radius: 0.5rem;
     
-    /* Document status colors - Simplified */
-    --status-critical: 0 72% 51%;
-    --status-warning: 38 92% 50%;
-    --status-safe: 142 69% 58%;
-    --status-expired: 220 13% 18%;
+    /* Soft document status colors */
+    --status-critical: 0 65% 70%;
+    --status-warning: 45 85% 65%;
+    --status-safe: 120 40% 60%;
+    --status-expired: 210 8% 35%;
     
-    /* Clean transitions */
+    /* Smooth transitions */
     --transition: all 0.2s ease-in-out;
   }
 
   .dark {
-    /* Dark minimal backgrounds */
-    --background: 220 13% 9%;
-    --foreground: 220 13% 91%;
+    /* Soft dark backgrounds */
+    --background: 210 11% 7%;
+    --foreground: 210 11% 93%;
     
-    /* Dark card system */
-    --card: 220 13% 11%;
-    --card-foreground: 220 13% 91%;
+    /* Gentle dark cards */
+    --card: 210 11% 9%;
+    --card-foreground: 210 11% 93%;
     
-    /* Dark surfaces */
-    --muted: 220 13% 15%;
-    --muted-foreground: 220 9% 54%;
+    /* Muted dark surfaces */
+    --muted: 210 11% 12%;
+    --muted-foreground: 210 9% 65%;
     
-    /* Primary in dark */
-    --primary: 221 83% 53%;
-    --primary-foreground: 0 0% 98%;
+    /* Soft primary in dark */
+    --primary: 210 100% 60%;
+    --primary-foreground: 210 11% 7%;
     
     /* Dark secondary */
-    --secondary: 220 13% 15%;
-    --secondary-foreground: 220 13% 91%;
+    --secondary: 210 11% 12%;
+    --secondary-foreground: 210 11% 93%;
     
     /* Dark accent */
-    --accent: 220 13% 15%;
-    --accent-foreground: 220 13% 91%;
+    --accent: 210 11% 12%;
+    --accent-foreground: 210 11% 93%;
     
-    /* Dark destructive */
-    --destructive: 0 63% 45%;
-    --destructive-foreground: 0 0% 98%;
+    /* Gentle dark destructive */
+    --destructive: 0 50% 55%;
+    --destructive-foreground: 0 0% 100%;
     
-    /* Dark borders */
-    --border: 220 13% 18%;
-    --input: 220 13% 18%;
+    /* Soft dark borders */
+    --border: 210 11% 15%;
+    --input: 210 11% 15%;
     
     /* Dark popover */
-    --popover: 220 13% 11%;
-    --popover-foreground: 220 13% 91%;
+    --popover: 210 11% 9%;
+    --popover-foreground: 210 11% 93%;
+    
+    /* Soft dark status colors */
+    --status-critical: 0 50% 60%;
+    --status-warning: 45 70% 60%;
+    --status-safe: 120 35% 55%;
+    --status-expired: 210 8% 45%;
   }
 
   .dark {
@@ -144,14 +150,15 @@
 }
 
 @layer components {
-  /* Minimal status indicators */
+  /* Gentle status indicators */
   .status-critical {
-    @apply bg-destructive text-destructive-foreground;
+    background: hsl(var(--status-critical));
+    color: white;
   }
 
   .status-warning {
     background: hsl(var(--status-warning));
-    color: hsl(220 13% 18%);
+    color: hsl(210 11% 15%);
   }
 
   .status-safe {
@@ -164,7 +171,7 @@
     color: white;
   }
 
-  /* Clean animations */
+  /* Smooth animations */
   .animate-fade-in {
     animation: fadeIn 0.3s ease-out;
   }
@@ -180,15 +187,6 @@
 
   .button-minimal {
     @apply bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200;
-  }
-
-  /* Clean spacing */
-  .section-padding {
-    @apply p-6;
-  }
-
-  .grid-responsive {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
   }
 }
 
