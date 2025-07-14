@@ -7,7 +7,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/layout/Layout";
 import Dashboard from "./pages/Dashboard";
 import Documents from "./pages/Documents";
+import DocumentAdd from "./pages/DocumentAdd";
 import Trucks from "./pages/Trucks";
+import TruckAdd from "./pages/TruckAdd";
 import EurasianRoute from "./pages/EurasianRoute";
 import CriticalAlerts from "./pages/CriticalAlerts";
 import Statistics from "./pages/Statistics";
@@ -34,9 +36,11 @@ const App = () => {
           <Route path="/" element={<Layout />}>
             <Route index element={<Dashboard />} />
             <Route path="documents" element={<Documents />} />
+            <Route path="documents/add" element={<DocumentAdd />} />
             <Route path="alerts" element={<CriticalAlerts />} />
             <Route path="statistics" element={<Statistics />} />
             <Route path="trucks" element={<Trucks />} />
+            <Route path="trucks/add" element={<TruckAdd />} />
             <Route path="eurasian" element={<EurasianRoute />} />
             <Route path="notifications" element={<Notifications />} />
             <Route path="settings" element={<Settings />} />

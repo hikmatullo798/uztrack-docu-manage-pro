@@ -163,7 +163,10 @@ export default function Documents() {
           </Select>
         </div>
         
-        <Button className="bg-primary hover:bg-primary/90">
+        <Button 
+          className="bg-primary hover:bg-primary/90"
+          onClick={() => window.location.href = '/documents/add'}
+        >
           <Plus className="w-4 h-4 mr-2" />
           Yangi hujjat yuklash
         </Button>

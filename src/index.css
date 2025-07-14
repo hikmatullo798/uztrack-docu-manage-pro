@@ -2,153 +2,96 @@
 @tailwind components;
 @tailwind utilities;
 
-/* UZTRUCK Document Management System Design Tokens */
+/* UZTRUCK - Minimalist Design System */
 
 @layer base {
   :root {
-    /* Background and surfaces */
-    --background: 240 10% 3.9%;
-    --surface: 240 10% 6%;
-    --surface-elevated: 240 8% 8%;
-    --foreground: 0 0% 98%;
-
-    /* Card system */
-    --card: 240 10% 6%;
-    --card-elevated: 240 8% 8%;
-    --card-foreground: 0 0% 98%;
-
-    /* Popover system */
-    --popover: 240 10% 6%;
-    --popover-foreground: 0 0% 98%;
-
-    /* Brand colors - Uzbekistan inspired */
-    --primary: 201 96% 32%;
-    --primary-glow: 201 100% 45%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 240 10% 15%;
-    --secondary-foreground: 0 0% 98%;
-
-    --accent: 48 96% 53%;
-    --accent-foreground: 240 10% 3.9%;
-
-    /* Alert system colors */
-    --alert-critical: 0 84% 60%;
-    --alert-critical-foreground: 0 0% 98%;
-    --alert-warning: 48 96% 53%;
-    --alert-warning-foreground: 240 10% 3.9%;
-    --alert-safe: 142 76% 36%;
-    --alert-safe-foreground: 0 0% 98%;
-    --alert-expired: 240 10% 3.9%;
-    --alert-expired-foreground: 0 0% 98%;
-
-    /* Status colors */
-    --status-active: 142 76% 36%;
-    --status-maintenance: 48 96% 53%;
-    --status-inactive: 0 0% 45%;
-    --status-sold: 240 10% 20%;
-
-    /* Semantic colors */
-    --muted: 240 5% 25%;
-    --muted-foreground: 240 5% 64.9%;
-    
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 6% 20%;
-    --input: 240 6% 20%;
-    --ring: 201 96% 32%;
-
-    --radius: 0.75rem;
-
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-    --gradient-alert: linear-gradient(135deg, hsl(var(--alert-critical)), hsl(var(--alert-warning)));
-    --gradient-status: linear-gradient(135deg, hsl(var(--alert-safe)), hsl(var(--primary-glow)));
-
-    /* Shadows */
-    --shadow-card: 0 4px 6px -1px hsl(var(--primary) / 0.1), 0 2px 4px -1px hsl(var(--primary) / 0.06);
-    --shadow-alert: 0 10px 30px -10px hsl(var(--alert-critical) / 0.3);
-    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.2);
-
-    /* Animations */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-spring: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-
-    /* Sidebar */
-    --sidebar-background: 240 10% 6%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 201 96% 32%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 8% 8%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 240 6% 20%;
-    --sidebar-ring: 201 96% 32%;
-  }
-
-  .light {
-    /* Background and surfaces */
+    /* Clean minimal backgrounds */
     --background: 0 0% 100%;
-    --surface: 0 0% 98%;
-    --surface-elevated: 0 0% 95%;
-    --foreground: 240 10% 3.9%;
-
-    /* Card system */
+    --foreground: 220 13% 18%;
+    
+    /* Pure card system */
     --card: 0 0% 100%;
-    --card-elevated: 0 0% 98%;
-    --card-foreground: 240 10% 3.9%;
-
+    --card-foreground: 220 13% 18%;
+    
+    /* Subtle surfaces */
+    --muted: 220 13% 97%;
+    --muted-foreground: 220 9% 46%;
+    
+    /* Primary brand - Clean blue */
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 98%;
+    
+    /* Minimal secondary */
+    --secondary: 220 13% 97%;
+    --secondary-foreground: 220 13% 18%;
+    
+    /* Clean accent */
+    --accent: 220 13% 97%;
+    --accent-foreground: 220 13% 18%;
+    
+    /* Alert system - Simplified */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    
+    /* Minimal borders */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 221 83% 53%;
+    
     /* Popover system */
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-
-    /* Brand colors - Uzbekistan inspired (lighter) */
-    --primary: 201 96% 32%;
-    --primary-glow: 201 100% 45%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 240 10% 3.9%;
-
-    --accent: 48 96% 53%;
-    --accent-foreground: 240 10% 3.9%;
-
-    /* Alert system colors (adjusted for light mode) */
-    --alert-critical: 0 84% 60%;
-    --alert-critical-foreground: 0 0% 98%;
-    --alert-warning: 48 96% 53%;
-    --alert-warning-foreground: 240 10% 3.9%;
-    --alert-safe: 142 76% 36%;
-    --alert-safe-foreground: 0 0% 98%;
-    --alert-expired: 240 10% 3.9%;
-    --alert-expired-foreground: 0 0% 98%;
-
-    /* Status colors */
-    --status-active: 142 76% 36%;
-    --status-maintenance: 48 96% 53%;
-    --status-inactive: 0 0% 45%;
-    --status-sold: 240 10% 20%;
-
-    /* Semantic colors */
-    --muted: 0 0% 96%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --popover-foreground: 220 13% 18%;
     
-    --destructive: 0 84% 60%;
+    /* Clean radius */
+    --radius: 0.5rem;
+    
+    /* Document status colors - Simplified */
+    --status-critical: 0 72% 51%;
+    --status-warning: 38 92% 50%;
+    --status-safe: 142 69% 58%;
+    --status-expired: 220 13% 18%;
+    
+    /* Clean transitions */
+    --transition: all 0.2s ease-in-out;
+  }
+
+  .dark {
+    /* Dark minimal backgrounds */
+    --background: 220 13% 9%;
+    --foreground: 220 13% 91%;
+    
+    /* Dark card system */
+    --card: 220 13% 11%;
+    --card-foreground: 220 13% 91%;
+    
+    /* Dark surfaces */
+    --muted: 220 13% 15%;
+    --muted-foreground: 220 9% 54%;
+    
+    /* Primary in dark */
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 98%;
+    
+    /* Dark secondary */
+    --secondary: 220 13% 15%;
+    --secondary-foreground: 220 13% 91%;
+    
+    /* Dark accent */
+    --accent: 220 13% 15%;
+    --accent-foreground: 220 13% 91%;
+    
+    /* Dark destructive */
+    --destructive: 0 63% 45%;
     --destructive-foreground: 0 0% 98%;
-
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 201 96% 32%;
-
-    /* Sidebar */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.9% 10%;
-    --sidebar-primary: 201 96% 32%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 240 5.9% 90%;
-    --sidebar-ring: 201 96% 32%;
+    
+    /* Dark borders */
+    --border: 220 13% 18%;
+    --input: 220 13% 18%;
+    
+    /* Dark popover */
+    --popover: 220 13% 11%;
+    --popover-foreground: 220 13% 91%;
   }
 
   .dark {
@@ -201,71 +144,51 @@
 }
 
 @layer components {
-  /* Alert level styles */
-  .alert-critical {
-    @apply bg-red-600 text-white border-red-500;
-    animation: pulse 2s infinite;
+  /* Minimal status indicators */
+  .status-critical {
+    @apply bg-destructive text-destructive-foreground;
   }
 
-  .alert-warning {
-    @apply bg-yellow-500 text-black border-yellow-400;
+  .status-warning {
+    background: hsl(var(--status-warning));
+    color: hsl(220 13% 18%);
   }
 
-  .alert-safe {
-    @apply bg-green-600 text-white border-green-500;
+  .status-safe {
+    background: hsl(var(--status-safe));
+    color: white;
   }
 
-  .alert-expired {
-    @apply bg-black text-white border-gray-800;
-    animation: blink 1s infinite;
+  .status-expired {
+    background: hsl(var(--status-expired));
+    color: white;
   }
 
-  /* Card variants */
-  .card-elevated {
-    @apply bg-card-elevated shadow-lg;
+  /* Clean animations */
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
   }
 
-  .card-glow {
-    box-shadow: var(--shadow-glow);
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out;
   }
 
-  /* Status indicators */
-  .status-active {
-    @apply bg-green-600 text-white;
+  /* Minimal components */
+  .card-minimal {
+    @apply bg-card border border-border rounded-lg shadow-sm;
   }
 
-  .status-maintenance {
-    @apply bg-yellow-500 text-black;
+  .button-minimal {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200;
   }
 
-  .status-inactive {
-    @apply bg-gray-500 text-white;
+  /* Clean spacing */
+  .section-padding {
+    @apply p-6;
   }
 
-  .status-sold {
-    @apply bg-gray-700 text-white;
-  }
-
-  /* Gradients */
-  .gradient-primary {
-    background: var(--gradient-primary);
-  }
-
-  .gradient-alert {
-    background: var(--gradient-alert);
-  }
-
-  .gradient-status {
-    background: var(--gradient-status);
-  }
-
-  /* Transitions */
-  .transition-smooth {
-    transition: var(--transition-smooth);
-  }
-
-  .transition-spring {
-    transition: var(--transition-spring);
+  .grid-responsive {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
   }
 }
 
