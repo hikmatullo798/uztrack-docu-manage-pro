@@ -9,7 +9,7 @@ export interface EurasianDocument {
   id: number;
   truckId: number;
   countryCode: string;
-  documentType: DocumentType;
+  documentType?: DocumentType;
   documentNumber: string;
   issueDate: string;
   expiryDate: string;

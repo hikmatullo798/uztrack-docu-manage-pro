@@ -204,11 +204,8 @@ export function DocumentUploadSystem({
     const completedUploads = uploadProgress.filter(upload => upload.status === 'completed');
     if (completedUploads.length === 0) return;
 
-    // Create a mock file for the first completed upload
     const firstUpload = completedUploads[0];
-    const mockFile = new File(['mock content'], firstUpload.fileName, { 
-      type: firstUpload.fileName.endsWith('.pdf') ? 'application/pdf' : 'image/jpeg' 
-    });
+    const mockFile = { name: firstUpload.fileName, size: firstUpload.fileSize } as File;
 
     onUploadComplete(mockFile, {
       ...metadata,

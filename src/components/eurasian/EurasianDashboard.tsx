@@ -131,7 +131,7 @@ export function EurasianDashboard({ selectedTruckId, selectedCountries }: Eurasi
       return {
         date: date.toISOString().split('T')[0],
         count,
-        severity: count > 3 ? 'high' : count > 1 ? 'medium' : 'low'
+        severity: (count > 3 ? 'high' : count > 1 ? 'medium' : 'low') as 'high' | 'medium' | 'low'
       };
     });
 
