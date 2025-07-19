@@ -1,9 +1,15 @@
 // Eurasian Module Types
+export interface DocumentType {
+  id: number;
+  name: string;
+  category: string;
+}
+
 export interface EurasianDocument {
   id: number;
   truckId: number;
   countryCode: string;
-  documentType: string;
+  documentType: DocumentType;
   documentNumber: string;
   issueDate: string;
   expiryDate: string;

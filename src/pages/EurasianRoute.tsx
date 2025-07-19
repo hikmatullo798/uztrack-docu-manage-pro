@@ -1,333 +1,321 @@
-import { useState } from "react";
-import { MapPin, Route, FileText, AlertTriangle, Globe, Clock, DollarSign, BarChart3 } from "lucide-react";
-import { Header } from "@/components/layout/Header";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { countries } from "@/data/mockData";
-import { TruckSelector } from "@/components/eurasian/TruckSelector";
-import { CountrySelector } from "@/components/eurasian/CountrySelector";
-import { DocumentDeficiencyDetector } from "@/components/eurasian/DocumentDeficiencyDetector";
-import { DocumentUploadSystem } from "@/components/eurasian/DocumentUploadSystem";
-import { EurasianDashboard } from "@/components/eurasian/EurasianDashboard";
-import { Truck } from "@/types";
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Progress } from '@/components/ui/progress';
+import { 
+  Truck, 
+  FileText, 
+  AlertTriangle, 
+  CheckCircle, 
+  Clock, 
+  Upload,
+  Eye,
+  Settings
+} from 'lucide-react';
+import { trucks } from '@/data/mockData';
 
-const routeExamples = [
-  {
-    id: 1,
-    name: "Toshkent - Moskva",
-    distance: 2847,
-    duration: 35,
-    countries: ["UZ", "KZ", "RU"],
-    documents: 12,
-    cost: 1250
-  },
-  {
-    id: 2,
-    name: "Toshkent - Berlin",
-    distance: 4521,
-    duration: 48,
-    countries: ["UZ", "KZ", "RU", "BY", "PL", "DE"],
-    documents: 18,
-    cost: 2100
-  },
-  {
-    id: 3,
-    name: "Toshkent - Varshava",
-    distance: 4102,
-    duration: 45,
-    countries: ["UZ", "KZ", "RU", "BY", "PL"],
-    documents: 15,
-    cost: 1890
-  }
+// Mock data for demonstration
+const mockDocuments = [
+  { id: 1, truckId: 1, documentType: 'TIR Carnet', status: 'valid', expiryDate: '2025-06-15', isUploaded: true },
+  { id: 2, truckId: 1, documentType: 'CMR', status: 'expiring_soon', expiryDate: '2024-08-10', isUploaded: true },
+  { id: 3, truckId: 1, documentType: 'Green Card', status: 'expired', expiryDate: '2024-07-01', isUploaded: false },
+  { id: 4, truckId: 2, documentType: 'TIR Carnet', status: 'valid', expiryDate: '2025-03-20', isUploaded: true },
+  { id: 5, truckId: 2, documentType: 'ATP Certificate', status: 'missing', expiryDate: '', isUploaded: false },
 ];
 
-const requiredDocuments = [
-  {
-    type: "Asosiy hujjatlar",
-    items: [
-      "Xalqaro haydovchilik guvohnomasi",
-      "Texnik passport",
-      "Ro'yxatdan o'tish guvohnomasi",
-      "Sug'urta polisi (Green Card)"
-    ]
-  },
-  {
-    type: "Tranzit hujjatlari",
-    items: [
-      "CMR shartnomasi",
-      "TIR Carnet",
-      "Tranzit ruxsatnomasi",
-      "Viza (agar kerak bo'lsa)"
-    ]
-  },
-  {
-    type: "Maxsus hujjatlar",
-    items: [
-      "ATP guvohnomasi (tez buziladigan yuklar)",
-      "ADR guvohnomasi (xavfli yuklar)",
-      "EUR-1 guvohnomasi (tijorat yuklari)",
-      "Veterinariya sertifikati (oziq-ovqat)"
-    ]
-  }
-];
+const EurasianRoute = () => {
+  const [selectedTruck, setSelectedTruck] = useState(trucks[0]);
+  const [activeTab, setActiveTab] = useState('overview');
 
-export default function EurasianRoute() {
-  const [originCity, setOriginCity] = useState("");
-  const [destinationCity, setDestinationCity] = useState("");
-  const [selectedRoute, setSelectedRoute] = useState<number | null>(null);
-  const [selectedTruck, setSelectedTruck] = useState<Truck | null>(null);
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-  const [showUploadSystem, setShowUploadSystem] = useState(false);
-  const [uploadDocumentType, setUploadDocumentType] = useState<string>("");
-  const [uploadCountryCode, setUploadCountryCode] = useState<string>("");
-  const [activeTab, setActiveTab] = useState("planning");
+  // Get documents for selected truck
+  const truckDocuments = mockDocuments.filter(doc => doc.truckId === selectedTruck.id);
+  
+  // Calculate statistics
+  const totalDocs = truckDocuments.length;
+  const validDocs = truckDocuments.filter(doc => doc.status === 'valid').length;
+  const expiredDocs = truckDocuments.filter(doc => doc.status === 'expired').length;
+  const expiringSoonDocs = truckDocuments.filter(doc => doc.status === 'expiring_soon').length;
+  const missingDocs = truckDocuments.filter(doc => doc.status === 'missing').length;
 
-  const handlePlanRoute = () => {
-    if (originCity && destinationCity) {
-      setSelectedRoute(1); // Mock route selection
-      setActiveTab("documents");
-    }
-  };
-
-  const handleTruckSelect = (truck: Truck) => {
-    setSelectedTruck(truck);
-  };
-
-  const handleCountriesChange = (countries: string[]) => {
-    setSelectedCountries(countries);
-  };
-
-  const handleUploadRequest = (documentType: string, countryCode: string) => {
-    setUploadDocumentType(documentType);
-    setUploadCountryCode(countryCode);
-    setShowUploadSystem(true);
-    setActiveTab("upload");
-  };
-
-  const handleUploadComplete = (file: File, metadata: any) => {
-    console.log("Upload completed:", file, metadata);
-    setShowUploadSystem(false);
-    setActiveTab("documents");
-    // Here you would typically save to your backend
-  };
-
-  const handleUploadCancel = () => {
-    setShowUploadSystem(false);
-    setActiveTab("documents");
-  };
+  const completionRate = totalDocs > 0 ? Math.round((validDocs / totalDocs) * 100) : 0;
 
   return (
-    <div className="flex-1 space-y-6 p-6">
-      <Header 
-        title="Yevroosiyo Moduli" 
-        subtitle="Xalqaro yo'l rejalashtirish va hujjatlar boshqaruvi"
-      />
+    <div className="min-h-screen bg-background">
+      <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-4 sm:space-y-6">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground">Hujjatlar Nazorati</h1>
+            <p className="text-sm text-muted-foreground">Xalqaro yuk tashish hujjatlari</p>
+          </div>
+          <Button className="w-full sm:w-auto">
+            <Upload className="h-4 w-4 mr-2" />
+            Hujjat Yuklash
+          </Button>
+        </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="planning" className="gap-2">
-            <Route className="w-4 h-4" />
-            Rejalashtirish
-          </TabsTrigger>
-          <TabsTrigger value="trucks" className="gap-2">
-            <MapPin className="w-4 h-4" />
-            Avtomobillar
-          </TabsTrigger>
-          <TabsTrigger value="countries" className="gap-2">
-            <Globe className="w-4 h-4" />
-            Davlatlar
-          </TabsTrigger>
-          <TabsTrigger value="documents" className="gap-2">
-            <FileText className="w-4 h-4" />
-            Hujjatlar
-          </TabsTrigger>
-          <TabsTrigger value="dashboard" className="gap-2">
-            <BarChart3 className="w-4 h-4" />
-            Dashboard
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="planning" className="space-y-6">
-          {/* Route Planning Form */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Route className="w-5 h-5" />
-                <span>Yo'l Rejalashtirish</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Boshlang'ich nuqta</label>
-                  <Input
-                    placeholder="Shahar nomini kiriting..."
-                    value={originCity}
-                    onChange={(e) => setOriginCity(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Manzil nuqta</label>
-                  <Input
-                    placeholder="Shahar nomini kiriting..."
-                    value={destinationCity}
-                    onChange={(e) => setDestinationCity(e.target.value)}
-                  />
-                </div>
-                <div className="flex items-end">
-                  <Button 
-                    onClick={handlePlanRoute}
-                    className="w-full bg-primary hover:bg-primary/90"
-                    disabled={!originCity || !destinationCity}
-                  >
-                    <MapPin className="w-4 h-4 mr-2" />
-                    Yo'l rejasini tuzish
-                  </Button>
-                </div>
+        {/* Stats Cards - Simplified */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          <Card className="bg-card border border-border">
+            <CardContent className="p-3 sm:p-4">
+              <div className="text-center">
+                <CheckCircle className="h-6 w-6 mx-auto mb-2 text-success" />
+                <p className="text-lg sm:text-xl font-bold text-foreground">{validDocs}</p>
+                <p className="text-xs text-muted-foreground">Yaroqli</p>
               </div>
             </CardContent>
           </Card>
 
-          {/* Route Examples */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <h3 className="text-lg font-semibold mb-4">Mashhur yo'nalishlar</h3>
-              <div className="space-y-4">
-                {routeExamples.map((route) => (
-                  <Card key={route.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <h4 className="text-lg font-semibold">{route.name}</h4>
-                        <Badge variant="outline">
-                          {route.countries.length} davlat
-                        </Badge>
-                      </div>
+          <Card className="bg-card border border-border">
+            <CardContent className="p-3 sm:p-4">
+              <div className="text-center">
+                <Clock className="h-6 w-6 mx-auto mb-2 text-warning" />
+                <p className="text-lg sm:text-xl font-bold text-foreground">{expiringSoonDocs}</p>
+                <p className="text-xs text-muted-foreground">Tugaydi</p>
+              </div>
+            </CardContent>
+          </Card>
 
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-                        <div className="text-center">
-                          <p className="text-2xl font-bold text-primary">{route.distance}</p>
-                          <p className="text-xs text-muted-foreground">km</p>
-                        </div>
-                        <div className="text-center">
-                          <p className="text-2xl font-bold text-blue-600">{route.duration}</p>
-                          <p className="text-xs text-muted-foreground">soat</p>
-                        </div>
-                        <div className="text-center">
-                          <p className="text-2xl font-bold text-green-600">{route.documents}</p>
-                          <p className="text-xs text-muted-foreground">hujjat</p>
-                        </div>
-                        <div className="text-center">
-                          <p className="text-2xl font-bold text-yellow-600">${route.cost}</p>
-                          <p className="text-xs text-muted-foreground">taxminiy</p>
-                        </div>
-                      </div>
+          <Card className="bg-card border border-border">
+            <CardContent className="p-3 sm:p-4">
+              <div className="text-center">
+                <AlertTriangle className="h-6 w-6 mx-auto mb-2 text-destructive" />
+                <p className="text-lg sm:text-xl font-bold text-foreground">{expiredDocs}</p>
+                <p className="text-xs text-muted-foreground">Muddati o'tgan</p>
+              </div>
+            </CardContent>
+          </Card>
 
-                      <div className="flex items-center space-x-2 mb-4">
-                        <span className="text-sm text-muted-foreground">Davlatlar:</span>
-                        <div className="flex space-x-1">
-                          {route.countries.map((countryCode) => {
-                            const country = countries.find(c => c.code === countryCode);
-                            return (
-                              <Badge key={countryCode} variant="secondary" className="text-xs">
-                                {country?.nameUz || countryCode}
-                              </Badge>
-                            );
-                          })}
-                        </div>
-                      </div>
+          <Card className="bg-card border border-border">
+            <CardContent className="p-3 sm:p-4">
+              <div className="text-center">
+                <FileText className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
+                <p className="text-lg sm:text-xl font-bold text-foreground">{missingDocs}</p>
+                <p className="text-xs text-muted-foreground">Kamayotgan</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-                      <Button 
-                        variant="outline" 
-                        className="w-full"
-                        onClick={() => {
-                          setSelectedCountries(route.countries);
-                          setActiveTab("countries");
-                        }}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm">Umumiy</TabsTrigger>
+            <TabsTrigger value="trucks" className="text-xs sm:text-sm">Mashinalar</TabsTrigger>
+            <TabsTrigger value="alerts" className="text-xs sm:text-sm">Eslatmalar</TabsTrigger>
+            <TabsTrigger value="settings" className="text-xs sm:text-sm">Sozlamalar</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-4 sm:space-y-6">
+            {/* Progress Card */}
+            <Card className="bg-card border border-border">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                  <FileText className="h-4 w-4 sm:h-5 sm:w-5" />
+                  Hujjatlar Holati
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="text-center">
+                  <div className="text-2xl sm:text-3xl font-bold text-primary mb-2">{completionRate}%</div>
+                  <p className="text-sm text-muted-foreground">Tayyor hujjatlar</p>
+                </div>
+                <Progress value={completionRate} className="h-2" />
+                
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-foreground">{totalDocs}</div>
+                    <p className="text-xs text-muted-foreground">Jami</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-success">{validDocs}</div>
+                    <p className="text-xs text-muted-foreground">Yaroqli</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Critical Alerts */}
+            {(expiredDocs > 0 || expiringSoonDocs > 0) && (
+              <Alert className="border-destructive/20 bg-destructive/5">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertDescription className="text-sm">
+                  <strong>Diqqat:</strong> {expiredDocs} ta hujjat muddati o'tgan, 
+                  {expiringSoonDocs} ta hujjat muddati tugaydi.
+                </AlertDescription>
+              </Alert>
+            )}
+          </TabsContent>
+
+          <TabsContent value="trucks" className="space-y-4 sm:space-y-6">
+            {/* Truck Selector */}
+            <Card className="bg-card border border-border">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base sm:text-lg">Mashina Tanlash</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                  {trucks.map((truck) => {
+                    const truckDocs = mockDocuments.filter(doc => doc.truckId === truck.id);
+                    const validCount = truckDocs.filter(doc => doc.status === 'valid').length;
+                    const totalCount = truckDocs.length;
+                    
+                    return (
+                      <Card 
+                        key={truck.id}
+                        className={`cursor-pointer transition-all ${
+                          selectedTruck.id === truck.id 
+                            ? 'ring-2 ring-primary bg-primary/5' 
+                            : 'hover:bg-muted/50'
+                        }`}
+                        onClick={() => setSelectedTruck(truck)}
                       >
-                        <Globe className="w-4 h-4 mr-2" />
-                        Bu yo'nalishni tanlash
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
+                        <CardContent className="p-3 sm:p-4">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              <Truck className="h-4 w-4" />
+                              <span className="font-medium text-sm">{truck.licensePlate}</span>
+                            </div>
+                            <Badge 
+                              variant={validCount === totalCount ? 'default' : validCount > totalCount/2 ? 'secondary' : 'destructive'}
+                              className="text-xs"
+                            >
+                              {validCount === totalCount ? 'Tayyor' : validCount > totalCount/2 ? 'Qisman' : 'Kamchil'}
+                            </Badge>
+                          </div>
+                          <p className="text-xs text-muted-foreground mb-3">{truck.model}</p>
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-xs">
+                              <span>Hujjatlar:</span>
+                              <span>{validCount}/{totalCount}</span>
+                            </div>
+                            <Progress value={(validCount/totalCount) * 100} className="h-1.5" />
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
 
-            {/* Required Documents Summary */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Kerakli hujjatlar</h3>
-              <div className="space-y-4">
-                {requiredDocuments.map((category, index) => (
-                  <Card key={index}>
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-base">{category.type}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      {category.items.map((item, itemIndex) => (
-                        <div key={itemIndex} className="flex items-center space-x-2">
-                          <FileText className="w-4 h-4 text-muted-foreground" />
-                          <span className="text-sm">{item}</span>
+            {/* Selected Truck Documents */}
+            <Card className="bg-card border border-border">
+              <CardHeader className="flex flex-row items-center justify-between pb-3">
+                <CardTitle className="text-base sm:text-lg">{selectedTruck.licensePlate} - Hujjatlar</CardTitle>
+                <Button size="sm" className="text-xs">
+                  <Upload className="h-3 w-3 mr-1" />
+                  Qo'shish
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {truckDocuments.map((doc) => (
+                    <div key={doc.id} className="flex items-center justify-between p-3 border border-border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <FileText className="h-4 w-4 text-muted-foreground" />
+                        <div>
+                          <h4 className="font-medium text-sm">{doc.documentType}</h4>
+                          <p className="text-xs text-muted-foreground">
+                            Muddat: {doc.expiryDate || 'Belgilanmagan'}
+                          </p>
                         </div>
-                      ))}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-        </TabsContent>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge 
+                          variant={doc.status === 'valid' ? 'default' : doc.status === 'expired' ? 'destructive' : 'secondary'}
+                          className="text-xs"
+                        >
+                          {doc.status === 'valid' ? 'Yaroqli' : 
+                           doc.status === 'expired' ? 'Tugagan' : 
+                           doc.status === 'expiring_soon' ? 'Tugaydi' : 'Yetishmaydi'}
+                        </Badge>
+                        {doc.isUploaded && (
+                          <Button size="sm" variant="outline" className="h-7 px-2">
+                            <Eye className="h-3 w-3" />
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-        <TabsContent value="trucks" className="space-y-6">
-          <TruckSelector
-            selectedTruckId={selectedTruck?.id}
-            onTruckSelect={handleTruckSelect}
-            countries={selectedCountries}
-          />
-        </TabsContent>
+          <TabsContent value="alerts" className="space-y-4 sm:space-y-6">
+            <Card className="bg-card border border-border">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base sm:text-lg">Kritik Eslatmalar</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {mockDocuments
+                    .filter(doc => doc.status === 'expired' || doc.status === 'expiring_soon')
+                    .map((doc) => {
+                      const truck = trucks.find(t => t.id === doc.truckId);
+                      return (
+                        <Alert key={doc.id} className={doc.status === 'expired' ? 'border-destructive/20 bg-destructive/5' : 'border-warning/20 bg-warning/5'}>
+                          <AlertTriangle className="h-4 w-4" />
+                          <AlertDescription className="text-sm">
+                            <strong>{truck?.licensePlate}</strong> - {doc.documentType}
+                            {doc.status === 'expired' ? ' muddati o\'tgan' : ' muddati tugaydi'} ({doc.expiryDate})
+                          </AlertDescription>
+                        </Alert>
+                      );
+                    })}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-        <TabsContent value="countries" className="space-y-6">
-          <CountrySelector
-            selectedCountries={selectedCountries}
-            onCountriesChange={handleCountriesChange}
-            origin={originCity}
-            destination={destinationCity}
-          />
-        </TabsContent>
-
-        <TabsContent value="documents" className="space-y-6">
-          {showUploadSystem ? (
-            <DocumentUploadSystem
-              documentType={uploadDocumentType}
-              countryCode={uploadCountryCode}
-              onUploadComplete={handleUploadComplete}
-              onCancel={handleUploadCancel}
-            />
-          ) : (
-            <DocumentDeficiencyDetector
-              selectedTruck={selectedTruck}
-              selectedCountries={selectedCountries}
-              onUploadRequest={handleUploadRequest}
-            />
-          )}
-        </TabsContent>
-
-        <TabsContent value="dashboard" className="space-y-6">
-          <EurasianDashboard
-            selectedTruckId={selectedTruck?.id}
-            selectedCountries={selectedCountries}
-          />
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="settings" className="space-y-4 sm:space-y-6">
+            <Card className="bg-card border border-border">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                  <Settings className="h-4 w-4 sm:h-5 sm:w-5" />
+                  Eslatma Sozlamalari
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex-1">
+                      <h4 className="font-medium text-sm">Eslatish vaqti</h4>
+                      <p className="text-xs text-muted-foreground">Muddat tugashidan oldin</p>
+                    </div>
+                    <select className="border border-border rounded px-3 py-2 text-sm bg-background">
+                      <option value="7">7 kun</option>
+                      <option value="14">14 kun</option>
+                      <option value="30">30 kun</option>
+                    </select>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium text-sm">Email eslatma</h4>
+                      <p className="text-xs text-muted-foreground">Email orqali xabar</p>
+                    </div>
+                    <input type="checkbox" defaultChecked className="rounded h-4 w-4" />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-medium text-sm">SMS eslatma</h4>
+                      <p className="text-xs text-muted-foreground">SMS orqali xabar</p>
+                    </div>
+                    <input type="checkbox" className="rounded h-4 w-4" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
-}
+};
+
+export default EurasianRoute;
