@@ -31,22 +31,10 @@ const navItems: NavItem[] = [
     icon: Home
   },
   {
-    title: "Hujjatlar Nazorati",
+    title: "Hujjatlar",
     href: "/documents",
     icon: FileText,
     badge: 6
-  },
-  {
-    title: "Kritik Eslatmalar",
-    href: "/alerts",
-    icon: AlertTriangle,
-    badge: 3,
-    color: "bg-red-600"
-  },
-  {
-    title: "Hujjatlar Statistikasi",
-    href: "/statistics",
-    icon: BarChart3
   },
   {
     title: "Mashinalar",
@@ -54,19 +42,9 @@ const navItems: NavItem[] = [
     icon: Truck
   },
   {
-    title: "Yevroosiyo Moduli",
+    title: "Yevroosiyo",
     href: "/eurasian",
     icon: Globe
-  },
-  {
-    title: "Eslatmalar Sozlamalari",
-    href: "/notifications",
-    icon: Bell
-  },
-  {
-    title: "Tizim Sozlamalari",
-    href: "/settings",
-    icon: Settings
   }
 ];
 
