@@ -55,81 +55,46 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Document Status Chart */}
-        <DocumentStatusChart />
-        
-        {/* Critical Alerts */}
-        <CriticalAlerts />
-        
-        {/* Quick Actions Card */}
-        <div className="lg:col-span-1">
-          <div className="grid grid-cols-1 gap-4">
-            <div className="bg-gradient-to-r from-primary to-primary-glow rounded-lg p-6 text-white">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Tezkor Harakatlar</h3>
-                  <p className="text-sm opacity-90 mb-4">
-                    Eng muhim vazifalarni bajaring
-                  </p>
-                  <div className="space-y-2">
-                    <button 
-                      onClick={() => window.location.href = '/documents/add'}
-                      className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm transition-colors w-full text-left"
-                    >
-                      📋 Yangi hujjat yuklash
-                    </button>
-                    <button 
-                      onClick={() => window.location.href = '/trucks/add'}
-                      className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm transition-colors w-full text-left"
-                    >
-                      🚛 Mashina qo'shish
-                    </button>
-                    <button 
-                      onClick={() => window.location.href = '/eurasian'}
-                      className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm transition-colors w-full text-left"
-                    >
-                      🌍 Yo'l rejasi tuzish
-                    </button>
-                  </div>
-                </div>
-                <FileText className="w-12 h-12 opacity-50" />
-              </div>
-            </div>
-            
-            {/* System Status */}
-            <div className="bg-card border border-border rounded-lg p-4">
-              <h4 className="font-semibold mb-3 flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span>Tizim Holati</span>
-              </h4>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span>Monitoring</span>
-                  <span className="text-green-600 font-medium">Ishlaydi</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Eslatmalar</span>
-                  <span className="text-green-600 font-medium">Faol</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Backup</span>
-                  <span className="text-green-600 font-medium">Oxirgi: Bugun</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Foydalanuvchilar</span>
-                  <span className="text-blue-600 font-medium">3 onlayn</span>
-                </div>
-              </div>
+      {/* Hujjatlar Boshqaruvi - Unified Document Management */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Left Column - Document Status & Quick Actions */}
+        <div className="space-y-6">
+          <DocumentStatusChart />
+          
+          {/* Quick Actions */}
+          <div className="bg-gradient-to-r from-primary to-primary/80 rounded-lg p-6 text-white">
+            <h3 className="text-lg font-semibold mb-4">Tezkor Harakatlar</h3>
+            <div className="grid grid-cols-1 gap-3">
+              <button 
+                onClick={() => window.location.href = '/documents/add'}
+                className="bg-white/20 hover:bg-white/30 px-4 py-3 rounded-lg text-sm transition-colors text-left flex items-center space-x-3"
+              >
+                <FileText className="w-4 h-4" />
+                <span>Yangi hujjat yuklash</span>
+              </button>
+              <button 
+                onClick={() => window.location.href = '/trucks/add'}
+                className="bg-white/20 hover:bg-white/30 px-4 py-3 rounded-lg text-sm transition-colors text-left flex items-center space-x-3"
+              >
+                <Truck className="w-4 h-4" />
+                <span>Mashina qo'shish</span>
+              </button>
+              <button 
+                onClick={() => window.location.href = '/eurasian'}
+                className="bg-white/20 hover:bg-white/30 px-4 py-3 rounded-lg text-sm transition-colors text-left flex items-center space-x-3"
+              >
+                <Clock className="w-4 h-4" />
+                <span>Yo'l rejasi tuzish</span>
+              </button>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Upcoming Expirations */}
-      <div className="grid grid-cols-1">
-        <UpcomingExpirations />
+        {/* Right Column - Critical Alerts & Expiring Documents */}
+        <div className="space-y-6">
+          <CriticalAlerts />
+          <UpcomingExpirations />
+        </div>
       </div>
     </div>
   );
