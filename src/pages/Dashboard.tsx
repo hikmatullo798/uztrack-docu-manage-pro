@@ -1,5 +1,4 @@
 import {
-  AlertTriangle,
   FileText,
   Truck,
   Clock,
@@ -9,7 +8,6 @@ import {
 import { Header } from "@/components/layout/Header";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { DocumentStatusChart } from "@/components/dashboard/DocumentStatusChart";
-import { CriticalAlerts } from "@/components/dashboard/CriticalAlerts";
 import { UpcomingExpirations } from "@/components/dashboard/UpcomingExpirations";
 import { dashboardStats } from "@/data/mockData";
 
@@ -22,21 +20,13 @@ export default function Dashboard() {
       />
       
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <StatsCard
           title="Jami Mashinalar"
           value={dashboardStats.totalTrucks}
           icon={Truck}
           color="primary"
           trend={{ value: 12, isPositive: true }}
-        />
-        
-        <StatsCard
-          title="Kritik Eslatmalar"
-          value={dashboardStats.criticalAlerts}
-          icon={AlertTriangle}
-          color="danger"
-          trend={{ value: 5, isPositive: false }}
         />
         
         <StatsCard
@@ -91,8 +81,7 @@ export default function Dashboard() {
         </div>
 
         {/* Right Column - Critical Alerts & Expiring Documents */}
-        <div className="space-y-6">
-          <CriticalAlerts />
+        <div>
           <UpcomingExpirations />
         </div>
       </div>

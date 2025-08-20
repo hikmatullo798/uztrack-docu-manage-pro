@@ -10,7 +10,6 @@ interface DocumentStatusData {
 const data: DocumentStatusData[] = [
   { name: "Xavfsiz", value: 16, color: "#22c55e" },
   { name: "Ogohlantiruv", value: 7, color: "#eab308" },
-  { name: "Kritik", value: 6, color: "#ef4444" },
   { name: "Muddati tugagan", value: 6, color: "#1f2937" }
 ];
 
@@ -18,24 +17,37 @@ const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
   cx, cy, midAngle, innerRadius, outerRadius, percent, name
 }: any) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const radius = outerRadius + 30;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
   if (percent * 100 < 5) return null;
 
   return (
-    <text 
-      x={x} 
-      y={y} 
-      fill="white" 
-      textAnchor={x > cx ? 'start' : 'end'} 
-      dominantBaseline="central"
-      fontSize={12}
-      fontWeight="bold"
-    >
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
+    <g>
+      <text 
+        x={x} 
+        y={y-8} 
+        fill="hsl(var(--foreground))" 
+        textAnchor={x > cx ? 'start' : 'end'} 
+        dominantBaseline="central"
+        fontSize={13}
+        fontWeight="600"
+      >
+        {name}
+      </text>
+      <text 
+        x={x} 
+        y={y+8} 
+        fill="hsl(var(--muted-foreground))" 
+        textAnchor={x > cx ? 'start' : 'end'} 
+        dominantBaseline="central"
+        fontSize={12}
+        fontWeight="500"
+      >
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+    </g>
   );
 };
 
@@ -49,7 +61,7 @@ export function DocumentStatusChart() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-80">
+        <div className="h-96">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -58,12 +70,22 @@ export function DocumentStatusChart() {
                 cy="50%"
                 labelLine={false}
                 label={renderCustomizedLabel}
-                outerRadius={100}
+                outerRadius={120}
+                innerRadius={60}
                 fill="#8884d8"
                 dataKey="value"
+                stroke="hsl(var(--background))"
+                strokeWidth={3}
               >
                 {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={entry.color}
+                    style={{
+                      filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))',
+                      transition: 'all 0.3s ease'
+                    }}
+                  />
                 ))}
               </Pie>
               <Tooltip 
@@ -71,19 +93,32 @@ export function DocumentStatusChart() {
                   `${value} ta hujjat`, 
                   name
                 ]}
-                labelStyle={{ color: '#000' }}
                 contentStyle={{ 
                   backgroundColor: 'hsl(var(--popover))',
+                  color: 'hsl(var(--popover-foreground))',
                   border: '1px solid hsl(var(--border))',
-                  borderRadius: '8px'
+                  borderRadius: '8px',
+                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
                 }}
-              />
-              <Legend 
-                wrapperStyle={{ paddingTop: '20px' }}
-                iconType="circle"
               />
             </PieChart>
           </ResponsiveContainer>
+        </div>
+        
+        {/* Custom Legend */}
+        <div className="grid grid-cols-2 gap-3 mt-4">
+          {data.map((entry, index) => (
+            <div key={entry.name} className="flex items-center gap-2 p-2 rounded-lg bg-muted/30">
+              <div 
+                className="w-3 h-3 rounded-full shadow-sm" 
+                style={{ backgroundColor: entry.color }}
+              />
+              <div className="flex-1">
+                <p className="text-sm font-medium">{entry.name}</p>
+                <p className="text-xs text-muted-foreground">{entry.value} ta</p>
+              </div>
+            </div>
+          ))}
         </div>
       </CardContent>
     </Card>
