@@ -1,17 +1,14 @@
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
-  Home,
-  FileText,
-  AlertTriangle,
-  BarChart3,
-  Truck,
-  Globe,
-  Bell,
-  Settings,
+  LayoutDashboard,
+  FolderOpen,
+  Car,
+  Map,
   ChevronLeft,
   ChevronRight,
-  Shield
+  UserCircle,
+  Package
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -28,23 +25,23 @@ const navItems: NavItem[] = [
   {
     title: "Dashboard",
     href: "/",
-    icon: Home
+    icon: LayoutDashboard
   },
   {
     title: "Hujjatlar",
     href: "/documents",
-    icon: FileText,
+    icon: FolderOpen,
     badge: 6
   },
   {
     title: "Mashinalar",
     href: "/trucks",
-    icon: Truck
+    icon: Car
   },
   {
     title: "Yevroosiyo",
     href: "/eurasian",
-    icon: Globe
+    icon: Map
   }
 ];
 
@@ -67,7 +64,7 @@ export function Sidebar() {
         {!collapsed && (
           <div className="flex items-center space-x-2">
             <div className="flex items-center justify-center w-8 h-8 bg-primary rounded-lg">
-              <Truck className="w-5 h-5 text-primary-foreground" />
+              <Package className="w-5 h-5 text-primary-foreground" />
             </div>
             <div className="flex flex-col">
               <h1 className="text-lg font-bold text-foreground">UZTRUCK</h1>
@@ -132,7 +129,7 @@ export function Sidebar() {
         {!collapsed ? (
           <div className="flex items-center space-x-3 p-3 bg-accent rounded-lg">
             <div className="flex items-center justify-center w-8 h-8 bg-primary rounded-full">
-              <Shield className="w-4 h-4 text-primary-foreground" />
+              <UserCircle className="w-4 h-4 text-primary-foreground" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium truncate">Admin User</p>
@@ -142,7 +139,7 @@ export function Sidebar() {
         ) : (
           <div className="flex justify-center">
             <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-              <Shield className="w-4 h-4 text-primary-foreground" />
+              <UserCircle className="w-4 h-4 text-primary-foreground" />
             </div>
           </div>
         )}

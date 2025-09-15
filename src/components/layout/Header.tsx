@@ -1,4 +1,4 @@
-import { Bell, Search, User, AlertTriangle, CheckCircle } from "lucide-react";
+import { Bell, Search, UserCircle, AlertOctagon, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -58,7 +58,7 @@ export function Header({ title, subtitle }: HeaderProps) {
             <DropdownMenuSeparator />
             
             <DropdownMenuItem className="flex items-start space-x-3 p-3">
-              <AlertTriangle className="w-4 h-4 text-red-600 mt-0.5" />
+              <AlertOctagon className="w-4 h-4 text-red-600 mt-0.5" />
               <div className="flex-1">
                 <p className="text-sm font-medium">CMR guvohnomasi tugaydi</p>
                 <p className="text-xs text-muted-foreground">01A123BC - 3 kun qoldi</p>
@@ -66,7 +66,7 @@ export function Header({ title, subtitle }: HeaderProps) {
             </DropdownMenuItem>
 
             <DropdownMenuItem className="flex items-start space-x-3 p-3">
-              <AlertTriangle className="w-4 h-4 text-yellow-600 mt-0.5" />
+              <AlertOctagon className="w-4 h-4 text-yellow-600 mt-0.5" />
               <div className="flex-1">
                 <p className="text-sm font-medium">Ro'yxat guvohnomasi</p>
                 <p className="text-xs text-muted-foreground">01B456DE - 25 kun qoldi</p>
@@ -74,7 +74,7 @@ export function Header({ title, subtitle }: HeaderProps) {
             </DropdownMenuItem>
 
             <DropdownMenuItem className="flex items-start space-x-3 p-3">
-              <CheckCircle className="w-4 h-4 text-green-600 mt-0.5" />
+              <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5" />
               <div className="flex-1">
                 <p className="text-sm font-medium">Yangi hujjat yuklandi</p>
                 <p className="text-xs text-muted-foreground">TIR Carnet - 01C789FG</p>
@@ -92,7 +92,7 @@ export function Header({ title, subtitle }: HeaderProps) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon">
-              <User className="w-4 h-4" />
+              <UserCircle className="w-4 h-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="bg-popover">

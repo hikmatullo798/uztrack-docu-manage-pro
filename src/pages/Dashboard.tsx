@@ -1,9 +1,9 @@
 import {
-  FileText,
-  Truck,
-  Clock,
-  CheckCircle,
-  XCircle
+  CloudUpload,
+  Car,
+  Timer,
+  CheckCircle2,
+  AlertCircle
 } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { StatsCard } from "@/components/dashboard/StatsCard";
@@ -24,7 +24,7 @@ export default function Dashboard() {
         <StatsCard
           title="Jami Mashinalar"
           value={dashboardStats.totalTrucks}
-          icon={Truck}
+          icon={Car}
           color="primary"
           trend={{ value: 12, isPositive: true }}
         />
@@ -32,14 +32,14 @@ export default function Dashboard() {
         <StatsCard
           title="Muddati Tugagan"
           value={dashboardStats.expiredDocuments}
-          icon={XCircle}
+          icon={AlertCircle}
           color="danger"
         />
         
         <StatsCard
           title="Xavfsiz Hujjatlar"
           value={dashboardStats.safeDocuments}
-          icon={CheckCircle}
+          icon={CheckCircle2}
           color="success"
           trend={{ value: 8, isPositive: true }}
         />
@@ -59,21 +59,21 @@ export default function Dashboard() {
                 onClick={() => window.location.href = '/documents/add'}
                 className="bg-white/20 hover:bg-white/30 px-4 py-3 rounded-lg text-sm transition-colors text-left flex items-center space-x-3"
               >
-                <FileText className="w-4 h-4" />
+                <CloudUpload className="w-4 h-4" />
                 <span>Yangi hujjat yuklash</span>
               </button>
               <button 
                 onClick={() => window.location.href = '/trucks/add'}
                 className="bg-white/20 hover:bg-white/30 px-4 py-3 rounded-lg text-sm transition-colors text-left flex items-center space-x-3"
               >
-                <Truck className="w-4 h-4" />
+                <Car className="w-4 h-4" />
                 <span>Mashina qo'shish</span>
               </button>
               <button 
                 onClick={() => window.location.href = '/eurasian'}
                 className="bg-white/20 hover:bg-white/30 px-4 py-3 rounded-lg text-sm transition-colors text-left flex items-center space-x-3"
               >
-                <Clock className="w-4 h-4" />
+                <Timer className="w-4 h-4" />
                 <span>Yo'l rejasi tuzish</span>
               </button>
             </div>
