@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ImageUpload } from '@/components/ui/image-upload';
 import { useToast } from '@/hooks/use-toast';
 
 export default function TruckAdd() {
@@ -26,6 +27,8 @@ export default function TruckAdd() {
     notes: ''
   });
 
+  const [truckImage, setTruckImage] = useState<{file: File, dataUrl: string} | null>(null);
+
   const handleSave = () => {
     if (!formData.licensePlate || !formData.brand || !formData.model) {
       toast({
@@ -36,12 +39,23 @@ export default function TruckAdd() {
       return;
     }
 
+    // Here you would save the truck data and image to your backend
+    console.log('Saving truck:', { formData, image: truckImage });
+
     toast({
       title: "Mashina saqlandi",
-      description: "Yangi mashina muvaffaqiyatli qo'shildi"
+      description: `Yangi mashina ${truckImage ? "va rasm " : ""}muvaffaqiyatli qo'shildi`
     });
     
     navigate('/trucks');
+  };
+
+  const handleImageUploaded = (file: File, dataUrl: string) => {
+    setTruckImage({ file, dataUrl });
+    toast({
+      title: "Rasm yuklandi",
+      description: "Mashina rasmi muvaffaqiyatli yuklandi"
+    });
   };
 
   return (
@@ -231,18 +245,23 @@ export default function TruckAdd() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Rasm yuklash</CardTitle>
+              <CardTitle>Mashina rasmi</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="border-2 border-dashed rounded-lg p-6 text-center">
-                <Truck className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground mb-4">
-                  Mashina rasmini yuklash
-                </p>
-                <Button variant="outline" size="sm">
-                  Rasm tanlash
-                </Button>
-              </div>
+              <ImageUpload
+                onImageUploaded={handleImageUploaded}
+                maxFileSize={5 * 1024 * 1024} // 5MB
+                placeholder="Mashina rasmini yuklash"
+                aspectRatio="landscape"
+              />
+              
+              {truckImage && (
+                <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                  <p className="text-sm text-green-700">
+                    ✅ Rasm yuklandi: {truckImage.file.name}
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
 
