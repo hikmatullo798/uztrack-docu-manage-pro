@@ -50,34 +50,6 @@ export default function Dashboard() {
         {/* Left Column - Document Status & Quick Actions */}
         <div className="space-y-6">
           <DocumentStatusChart />
-          
-          {/* Quick Actions */}
-          <div className="bg-gradient-to-r from-primary to-primary/80 rounded-lg p-6 text-white">
-            <h3 className="text-lg font-semibold mb-4">Tezkor Harakatlar</h3>
-            <div className="grid grid-cols-1 gap-3">
-              <button 
-                onClick={() => window.location.href = '/documents/add'}
-                className="bg-white/20 hover:bg-white/30 px-4 py-3 rounded-lg text-sm transition-colors text-left flex items-center space-x-3"
-              >
-                <CloudUpload className="w-4 h-4" />
-                <span>Yangi hujjat yuklash</span>
-              </button>
-              <button 
-                onClick={() => window.location.href = '/trucks/add'}
-                className="bg-white/20 hover:bg-white/30 px-4 py-3 rounded-lg text-sm transition-colors text-left flex items-center space-x-3"
-              >
-                <Car className="w-4 h-4" />
-                <span>Mashina qo'shish</span>
-              </button>
-              <button 
-                onClick={() => window.location.href = '/eurasian'}
-                className="bg-white/20 hover:bg-white/30 px-4 py-3 rounded-lg text-sm transition-colors text-left flex items-center space-x-3"
-              >
-                <Timer className="w-4 h-4" />
-                <span>Yo'l rejasi tuzish</span>
-              </button>
-            </div>
-          </div>
         </div>
 
         {/* Right Column - Critical Alerts & Expiring Documents */}
