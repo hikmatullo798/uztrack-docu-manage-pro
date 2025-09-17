@@ -10,7 +10,7 @@ import Documents from "./pages/Documents";
 import DocumentAdd from "./pages/DocumentAdd";
 import Trucks from "./pages/Trucks";
 import TruckAdd from "./pages/TruckAdd";
-import EurasianRoute from "./pages/EurasianRoute";
+import RoutePlanner from "./pages/RoutePlanner";
 import CriticalAlerts from "./pages/CriticalAlerts";
 import Statistics from "./pages/Statistics";
 import Notifications from "./pages/Notifications";
@@ -41,7 +41,7 @@ const App = () => {
             <Route path="statistics" element={<Statistics />} />
             <Route path="trucks" element={<Trucks />} />
             <Route path="trucks/add" element={<TruckAdd />} />
-            <Route path="eurasian" element={<EurasianRoute />} />
+            <Route path="route-planner" element={<RoutePlanner />} />
             <Route path="notifications" element={<Notifications />} />
             <Route path="settings" element={<Settings />} />
           </Route>

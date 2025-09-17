@@ -39,8 +39,8 @@ const navItems: NavItem[] = [
     icon: Car
   },
   {
-    title: "Yevroosiyo",
-    href: "/eurasian",
+    title: "Yo'nalish Rejasi",
+    href: "/route-planner",
     icon: Map
   }
 ];
