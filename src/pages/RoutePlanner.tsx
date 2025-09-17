@@ -37,6 +37,19 @@ interface RouteRequirement {
   processingDays: number;
 }
 
+interface RoutePlan {
+  id: string;
+  name: string;
+  origin: string;
+  destination: string;
+  cargoType: string;
+  cargoWeight: string;
+  plannedDate: string;
+  requirements: RouteRequirement[];
+  createdAt: string;
+  status: 'draft' | 'ready' | 'incomplete';
+}
+
 const cities = [
   // O'zbekiston
   { name: "Toshkent, O'zbekiston", country: "UZ" },
@@ -108,6 +121,9 @@ export default function RoutePlanner() {
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [requirements, setRequirements] = useState<RouteRequirement[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [savedPlans, setSavedPlans] = useState<RoutePlan[]>([]);
+  const [editingPlan, setEditingPlan] = useState<RoutePlan | null>(null);
+  const [showPlansList, setShowPlansList] = useState(false);
 
   const analyzeRoute = async () => {
     if (!formData.origin || !formData.destination || !formData.cargoType) {
@@ -182,14 +198,93 @@ export default function RoutePlanner() {
     }
   };
 
+  const savePlan = () => {
+    if (!formData.origin || !formData.destination || !formData.cargoType || requirements.length === 0) {
+      return;
+    }
+
+    const planName = `${formData.origin} → ${formData.destination}`;
+    const planStatus: 'draft' | 'ready' | 'incomplete' = 
+      requirements.flatMap(r => r.documents).some(d => d.status === 'missing') ? 'incomplete' : 'ready';
+
+    const newPlan: RoutePlan = {
+      id: editingPlan ? editingPlan.id : `plan_${Date.now()}`,
+      name: planName,
+      origin: formData.origin,
+      destination: formData.destination,
+      cargoType: formData.cargoType,
+      cargoWeight: formData.cargoWeight,
+      plannedDate: formData.plannedDate,
+      requirements,
+      createdAt: editingPlan ? editingPlan.createdAt : new Date().toISOString(),
+      status: planStatus
+    };
+
+    if (editingPlan) {
+      setSavedPlans(plans => plans.map(p => p.id === editingPlan.id ? newPlan : p));
+      setEditingPlan(null);
+    } else {
+      setSavedPlans(plans => [...plans, newPlan]);
+    }
+  };
+
+  const loadPlanForEditing = (plan: RoutePlan) => {
+    setFormData({
+      origin: plan.origin,
+      destination: plan.destination,
+      cargoType: plan.cargoType,
+      cargoWeight: plan.cargoWeight,
+      truckType: "",
+      plannedDate: plan.plannedDate
+    });
+    setRequirements(plan.requirements);
+    setEditingPlan(plan);
+    setShowPlansList(false);
+  };
+
+  const deletePlan = (planId: string) => {
+    setSavedPlans(plans => plans.filter(p => p.id !== planId));
+  };
+
+  const resetForm = () => {
+    setFormData({
+      origin: "",
+      destination: "",
+      cargoType: "",
+      cargoWeight: "",
+      truckType: "",
+      plannedDate: ""
+    });
+    setRequirements([]);
+    setEditingPlan(null);
+  };
+
   return (
     <div className="flex-1 space-y-6 p-6">
-      <Header 
-        title="Yo'nalish Rejasi" 
-        subtitle="Yo'nalish bo'yicha kerakli hujjatlarni aniqlash va boshqarish"
-      />
+      <div className="flex items-center justify-between">
+        <Header 
+          title="Yo'nalish Rejasi" 
+          subtitle="Yo'nalish bo'yicha kerakli hujjatlarni aniqlash va boshqarish"
+        />
+        <div className="flex gap-2">
+          <Button
+            variant={showPlansList ? "outline" : "default"}
+            onClick={() => setShowPlansList(false)}
+          >
+            {editingPlan ? "Tahrirlash" : "Yangi Reja"}
+          </Button>
+          <Button
+            variant={showPlansList ? "default" : "outline"}
+            onClick={() => setShowPlansList(true)}
+          >
+            Saqlangan Rejalar ({savedPlans.length})
+          </Button>
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {!showPlansList ? (
+        <>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Route Planning Form */}
         <Card>
           <CardHeader>
@@ -366,69 +461,24 @@ export default function RoutePlanner() {
           <CardContent>
             {requirements.map((req, index) => (
               <div key={index} className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold flex items-center gap-2">
-                    <MapPin className="w-5 h-5" />
-                    {req.country}
-                  </h3>
-                  <div className="text-sm text-muted-foreground">
-                    {req.transitFee} {req.currency} • {req.processingDays} kun
-                  </div>
-                </div>
-
-                <div className="grid gap-3">
-                  {req.documents.map((doc, docIndex) => (
-                    <div 
-                      key={docIndex}
-                      className={cn(
-                        "flex items-center justify-between p-3 rounded-lg border",
-                        doc.status === 'missing' && "border-red-200 bg-red-50",
-                        doc.status === 'expiring' && "border-yellow-200 bg-yellow-50",
-                        doc.status === 'valid' && "border-green-200 bg-green-50"
-                      )}
-                    >
-                      <div className="flex items-center gap-3">
-                        {getStatusIcon(doc.status)}
-                        <div>
-                          <div className="font-medium">{doc.name}</div>
-                          <div className="text-sm text-muted-foreground">{doc.description}</div>
-                          {doc.expiryDate && (
-                            <div className="text-xs text-muted-foreground">
-                              Muddat: {new Date(doc.expiryDate).toLocaleDateString('uz-UZ')}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {doc.required && (
-                          <Badge variant="secondary">Majburiy</Badge>
-                        )}
-                        {doc.status === 'missing' && (
-                          <Button size="sm" variant="outline">
-                            <Upload className="w-3 h-3 mr-1" />
-                            Yuklash
-                          </Button>
-                        )}
-                        {doc.status === 'valid' && (
-                          <Button size="sm" variant="outline">
-                            <Download className="w-3 h-3 mr-1" />
-                            Ko'rish
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {index < requirements.length - 1 && <Separator className="my-4" />}
+...
               </div>
             ))}
 
             <div className="mt-6 flex gap-4">
-              <Button className="flex-1">
+              <Button 
+                onClick={savePlan}
+                className="flex-1"
+                disabled={!formData.origin || !formData.destination || !formData.cargoType || requirements.length === 0}
+              >
                 <FileText className="w-4 h-4 mr-2" />
-                Barcha Hujjatlarni Yuklab Olish
+                {editingPlan ? "Rejani Yangilash" : "Rejani Saqlash"}
               </Button>
+              {editingPlan && (
+                <Button variant="outline" onClick={resetForm}>
+                  Bekor Qilish
+                </Button>
+              )}
               <Button variant="outline" className="flex-1">
                 <Download className="w-4 h-4 mr-2" />
                 Hisobot Eksport
@@ -436,6 +486,86 @@ export default function RoutePlanner() {
             </div>
           </CardContent>
         </Card>
+      )}
+        </>
+      ) : (
+        // Saved Plans List
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <FileText className="w-5 h-5" />
+                Saqlangan Yo'nalish Rejalari
+              </CardTitle>
+              <CardDescription>
+                Yaratilgan va saqlangan yo'nalish rejalaringiz
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {savedPlans.length === 0 ? (
+                <div className="text-center py-8 text-muted-foreground">
+                  <FileText className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                  <p>Hozircha saqlangan rejalar yo'q</p>
+                  <p className="text-sm">Yangi yo'nalish rejasi yarating</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {savedPlans.map((plan) => (
+                    <div key={plan.id} className="border rounded-lg p-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="font-semibold">{plan.name}</h3>
+                          <p className="text-sm text-muted-foreground">
+                            {plan.cargoType} • {plan.cargoWeight}t • {new Date(plan.createdAt).toLocaleDateString('uz-UZ')}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge 
+                            variant={plan.status === 'ready' ? 'default' : plan.status === 'incomplete' ? 'destructive' : 'secondary'}
+                          >
+                            {plan.status === 'ready' ? 'Tayyor' : plan.status === 'incomplete' ? 'Tugallanmagan' : 'Qoralama'}
+                          </Badge>
+                          <Button size="sm" variant="outline" onClick={() => loadPlanForEditing(plan)}>
+                            Tahrirlash
+                          </Button>
+                          <Button size="sm" variant="destructive" onClick={() => deletePlan(plan.id)}>
+                            O'chirish
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-3 gap-4 text-sm">
+                        <div>
+                          <span className="text-muted-foreground">Hujjatlar:</span>
+                          <div className="flex gap-1 mt-1">
+                            <Badge variant="outline" className="text-xs">
+                              {plan.requirements.flatMap(r => r.documents).filter(d => d.status === 'valid').length} tayyor
+                            </Badge>
+                            <Badge variant="destructive" className="text-xs">
+                              {plan.requirements.flatMap(r => r.documents).filter(d => d.status === 'missing').length} yo'q
+                            </Badge>
+                          </div>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Xarajat:</span>
+                          <div className="font-medium">
+                            {plan.requirements.reduce((sum, r) => sum + r.transitFee, 0)} {plan.requirements[0]?.currency}
+                          </div>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Tayyorlov:</span>
+                          <div className="font-medium">
+                            {Math.max(...plan.requirements.map(r => r.processingDays))} kun
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       )}
     </div>
   );
