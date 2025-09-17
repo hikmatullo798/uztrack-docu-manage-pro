@@ -37,14 +37,52 @@ interface RouteRequirement {
   processingDays: number;
 }
 
-const countries = [
-  { code: "RU", name: "Rossiya", nameUz: "Rossiya" },
-  { code: "KZ", name: "Qozog'iston", nameUz: "Qozog'iston" },
-  { code: "KG", name: "Qirg'iziston", nameUz: "Qirg'iziston" },
-  { code: "TJ", name: "Tojikiston", nameUz: "Tojikiston" },
-  { code: "TM", name: "Turkmaniston", nameUz: "Turkmaniston" },
-  { code: "CN", name: "Xitoy", nameUz: "Xitoy" },
-  { code: "TR", name: "Turkiya", nameUz: "Turkiya" }
+const cities = [
+  // O'zbekiston
+  { name: "Toshkent, O'zbekiston", country: "UZ" },
+  { name: "Samarqand, O'zbekiston", country: "UZ" },
+  { name: "Buxoro, O'zbekiston", country: "UZ" },
+  { name: "Andijon, O'zbekiston", country: "UZ" },
+  { name: "Namangan, O'zbekiston", country: "UZ" },
+  { name: "Farg'ona, O'zbekiston", country: "UZ" },
+  
+  // Rossiya
+  { name: "Moskva, Rossiya", country: "RU" },
+  { name: "Sankt-Peterburg, Rossiya", country: "RU" },
+  { name: "Novosibirsk, Rossiya", country: "RU" },
+  { name: "Yekaterinburg, Rossiya", country: "RU" },
+  { name: "Kazan, Rossiya", country: "RU" },
+  { name: "Nizhniy Novgorod, Rossiya", country: "RU" },
+  
+  // Qozog'iston
+  { name: "Almaty, Qozog'iston", country: "KZ" },
+  { name: "Nur-Sultan, Qozog'iston", country: "KZ" },
+  { name: "Shymkent, Qozog'iston", country: "KZ" },
+  { name: "Aktobe, Qozog'iston", country: "KZ" },
+  
+  // Qirg'iziston
+  { name: "Bishkek, Qirg'iziston", country: "KG" },
+  { name: "Osh, Qirg'iziston", country: "KG" },
+  
+  // Tojikiston
+  { name: "Dushanbe, Tojikiston", country: "TJ" },
+  { name: "Xujand, Tojikiston", country: "TJ" },
+  
+  // Turkmaniston
+  { name: "Ashgabat, Turkmaniston", country: "TM" },
+  { name: "Turkmenbashi, Turkmaniston", country: "TM" },
+  
+  // Xitoy
+  { name: "Urumchi, Xitoy", country: "CN" },
+  { name: "Kashgar, Xitoy", country: "CN" },
+  { name: "Beijing, Xitoy", country: "CN" },
+  { name: "Shanghai, Xitoy", country: "CN" },
+  
+  // Turkiya
+  { name: "Istanbul, Turkiya", country: "TR" },
+  { name: "Ankara, Turkiya", country: "TR" },
+  { name: "Trabzon, Turkiya", country: "TR" },
+  { name: "Antalya, Turkiya", country: "TR" }
 ];
 
 const cargoTypes = [
@@ -167,21 +205,33 @@ export default function RoutePlanner() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="origin">Chiqish joyi</Label>
-                <Input
-                  id="origin"
-                  placeholder="Toshkent, O'zbekiston"
-                  value={formData.origin}
-                  onChange={(e) => setFormData({...formData, origin: e.target.value})}
-                />
+                <Select onValueChange={(value) => setFormData({...formData, origin: value})}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Chiqish joyini tanlang" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cities.map((city) => (
+                      <SelectItem key={city.name} value={city.name}>
+                        {city.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="destination">Borish joyi</Label>
-                <Input
-                  id="destination"
-                  placeholder="Moskva, Rossiya"
-                  value={formData.destination}
-                  onChange={(e) => setFormData({...formData, destination: e.target.value})}
-                />
+                <Select onValueChange={(value) => setFormData({...formData, destination: value})}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Borish joyini tanlang" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cities.map((city) => (
+                      <SelectItem key={city.name} value={city.name}>
+                        {city.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
