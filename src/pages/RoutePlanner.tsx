@@ -124,6 +124,88 @@ export default function RoutePlanner() {
   const [savedPlans, setSavedPlans] = useState<RoutePlan[]>([]);
   const [editingPlan, setEditingPlan] = useState<RoutePlan | null>(null);
   const [showPlansList, setShowPlansList] = useState(false);
+  const [perplexityApiKey, setPerplexityApiKey] = useState(localStorage.getItem('perplexity_api_key') || '');
+
+  const analyzeRouteWithAI = async (origin: string, destination: string) => {
+    if (!perplexityApiKey) {
+      alert('Iltimos, Perplexity API kalitini kiriting');
+      return [];
+    }
+
+    try {
+      const response = await fetch('https://api.perplexity.ai/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${perplexityApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'llama-3.1-sonar-small-128k-online',
+          messages: [
+            {
+              role: 'system',
+              content: 'Siz hujjat talablarini aniqlash bo\'yicha mutaxassissiz. Javobni JSON formatida bering.'
+            },
+            {
+              role: 'user',
+              content: `${origin}dan ${destination}ga yuk tashish uchun qanday hujjatlar kerak? Qaysi davlatlardan o'tish kerak va har bir davlat uchun kerakli hujjatlar ro'yxatini bering. Javobni JSON formatida: {"countries": [{"name": "davlat_nomi", "documents": [{"name": "hujjat_nomi", "required": true/false, "description": "tavsif"}], "transitFee": raqam, "currency": "valyuta", "processingDays": raqam}]} formatida bering.`
+            }
+          ],
+          temperature: 0.2,
+          top_p: 0.9,
+          max_tokens: 1000,
+          return_images: false,
+          return_related_questions: false,
+          frequency_penalty: 1,
+          presence_penalty: 0
+        }),
+      });
+
+      const data = await response.json();
+      const aiResponse = data.choices[0]?.message?.content;
+      
+      try {
+        const parsed = JSON.parse(aiResponse);
+        return parsed.countries?.map((country: any) => ({
+          country: country.name,
+          documents: country.documents?.map((doc: any) => ({
+            name: doc.name,
+            required: doc.required,
+            status: 'missing' as const,
+            description: doc.description
+          })) || [],
+          transitFee: country.transitFee || 0,
+          currency: country.currency || 'USD',
+          processingDays: country.processingDays || 1
+        })) || [];
+      } catch {
+        // Fallback to simple parsing if JSON parsing fails
+        return [{
+          country: "Transit davlati",
+          documents: [
+            {
+              name: "TIR Karneti",
+              required: true,
+              status: 'missing' as const,
+              description: "Xalqaro yuk tashish uchun majburiy hujjat"
+            },
+            {
+              name: "CMR hujjati", 
+              required: true,
+              status: 'missing' as const,
+              description: "Yuk tashish shartnomasi"
+            }
+          ],
+          transitFee: 500,
+          currency: 'USD',
+          processingDays: 2
+        }];
+      }
+    } catch (error) {
+      console.error('AI API Error:', error);
+      return [];
+    }
+  };
 
   const analyzeRoute = async () => {
     if (!formData.origin || !formData.destination) {
@@ -132,50 +214,14 @@ export default function RoutePlanner() {
 
     setIsAnalyzing(true);
     
-    // Simulate route analysis
-    setTimeout(() => {
-      const mockRequirements: RouteRequirement[] = [
-        {
-          country: "Rossiya",
-          documents: [
-            {
-              name: "TIR Karneti",
-              required: true,
-              status: "valid",
-              expiryDate: "2024-12-15",
-              description: "Xalqaro yuk tashish uchun majburiy"
-            },
-            {
-              name: "CMR hujjati",
-              required: true,
-              status: "missing",
-              description: "Yuk tashish shartnomasi"
-            },
-            {
-              name: "Yoqilg'i kartasi",
-              required: true,
-              status: "valid",
-              expiryDate: "2025-06-20",
-              description: "Rossiyada yoqilg'i sotib olish uchun"
-            },
-            {
-              name: "GLONASS qurulmasi",
-              required: true,
-              status: "expiring",
-              expiryDate: "2024-10-30",
-              description: "Rossiyada majburiy monitoring tizimi"
-            }
-          ],
-          transitFee: 1500,
-          currency: "RUB",
-          processingDays: 3
-        }
-      ];
-      
-      setRequirements(mockRequirements);
-      setSelectedCountries(["RU"]);
-      setIsAnalyzing(false);
-    }, 2000);
+    const aiRequirements = await analyzeRouteWithAI(formData.origin, formData.destination);
+    
+    if (aiRequirements.length > 0) {
+      setRequirements(aiRequirements);
+      setSelectedCountries(aiRequirements.map(r => r.country.slice(0, 2).toUpperCase()));
+    }
+    
+    setIsAnalyzing(false);
   };
 
   const getStatusColor = (status: string) => {
@@ -297,6 +343,37 @@ export default function RoutePlanner() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            {!perplexityApiKey && (
+              <Alert>
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  Haqiqiy hujjatlar ro'yxatini olish uchun Perplexity API kalitini kiriting. 
+                  <a href="https://www.perplexity.ai/settings/api" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline ml-1">
+                    API kalitini olish
+                  </a>
+                </AlertDescription>
+              </Alert>
+            )}
+            
+            <div className="space-y-2">
+              <Label htmlFor="api-key">Perplexity API Kaliti (ixtiyoriy)</Label>
+              <Input
+                id="api-key"
+                type="password"
+                placeholder="pplx-..."
+                value={perplexityApiKey}
+                onChange={(e) => {
+                  setPerplexityApiKey(e.target.value);
+                  localStorage.setItem('perplexity_api_key', e.target.value);
+                }}
+              />
+              <p className="text-xs text-muted-foreground">
+                Yaxshiroq xavfsizlik uchun <a href="#" className="text-blue-600 underline">Supabase ulash</a> tavsiya etiladi.
+              </p>
+            </div>
+
+            <Separator />
+
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="origin">Chiqish joyi</Label>
