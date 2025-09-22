@@ -126,7 +126,7 @@ export default function RoutePlanner() {
   const [showPlansList, setShowPlansList] = useState(false);
 
   const analyzeRoute = async () => {
-    if (!formData.origin || !formData.destination || !formData.cargoType) {
+    if (!formData.origin || !formData.destination) {
       return;
     }
 
@@ -199,7 +199,7 @@ export default function RoutePlanner() {
   };
 
   const savePlan = () => {
-    if (!formData.origin || !formData.destination || !formData.cargoType || requirements.length === 0) {
+    if (!formData.origin || !formData.destination || requirements.length === 0) {
       return;
     }
 
@@ -300,7 +300,12 @@ export default function RoutePlanner() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="origin">Chiqish joyi</Label>
-                <Select onValueChange={(value) => setFormData({...formData, origin: value})}>
+                <Select value={formData.origin} onValueChange={(value) => {
+                  setFormData({...formData, origin: value});
+                  if (value && formData.destination) {
+                    analyzeRoute();
+                  }
+                }}>
                   <SelectTrigger>
                     <SelectValue placeholder="Chiqish joyini tanlang" />
                   </SelectTrigger>
@@ -315,7 +320,12 @@ export default function RoutePlanner() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="destination">Borish joyi</Label>
-                <Select onValueChange={(value) => setFormData({...formData, destination: value})}>
+                <Select value={formData.destination} onValueChange={(value) => {
+                  setFormData({...formData, destination: value});
+                  if (formData.origin && value) {
+                    analyzeRoute();
+                  }
+                }}>
                   <SelectTrigger>
                     <SelectValue placeholder="Borish joyini tanlang" />
                   </SelectTrigger>
@@ -368,23 +378,12 @@ export default function RoutePlanner() {
               </div>
             </div>
 
-            <Button 
-              onClick={analyzeRoute}
-              disabled={isAnalyzing}
-              className="w-full"
-            >
-              {isAnalyzing ? (
-                <>
-                  <Clock className="w-4 h-4 mr-2 animate-spin" />
-                  Tahlil qilinmoqda...
-                </>
-              ) : (
-                <>
-                  <FileText className="w-4 h-4 mr-2" />
-                  Hujjatlarni Tahlil Qilish
-                </>
-              )}
-            </Button>
+            {isAnalyzing && (
+              <div className="flex items-center justify-center py-4">
+                <Clock className="w-4 h-4 mr-2 animate-spin" />
+                <span>Tahlil qilinmoqda...</span>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -469,7 +468,7 @@ export default function RoutePlanner() {
               <Button 
                 onClick={savePlan}
                 className="flex-1"
-                disabled={!formData.origin || !formData.destination || !formData.cargoType || requirements.length === 0}
+                disabled={!formData.origin || !formData.destination || requirements.length === 0}
               >
                 <FileText className="w-4 h-4 mr-2" />
                 {editingPlan ? "Rejani Yangilash" : "Rejani Saqlash"}
