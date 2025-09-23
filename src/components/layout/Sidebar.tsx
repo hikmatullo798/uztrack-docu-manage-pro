@@ -4,7 +4,6 @@ import {
   LayoutDashboard,
   FolderOpen,
   Car,
-  Map,
   ChevronLeft,
   ChevronRight,
   UserCircle,
@@ -37,11 +36,6 @@ const navItems: NavItem[] = [
     title: "Mashinalar",
     href: "/trucks",
     icon: Car
-  },
-  {
-    title: "Yo'nalish Rejasi",
-    href: "/route-planner",
-    icon: Map
   }
 ];
 
