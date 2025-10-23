@@ -2,140 +2,113 @@
 @tailwind components;
 @tailwind utilities;
 
-/* UZTRUCK - Minimalist Design System */
+/* UZTRUCK - Flat Design System */
 
 @layer base {
   :root {
-    /* Ultra-minimal light backgrounds */
-    --background: 0 0% 99%;
-    --foreground: 210 11% 15%;
+    /* Flat light backgrounds - pure, no gradients */
+    --background: 0 0% 98%;
+    --foreground: 0 0% 10%;
     
-    /* Soft card system */
+    /* Flat card system - clean borders, no shadows */
     --card: 0 0% 100%;
-    --card-foreground: 210 11% 15%;
+    --card-foreground: 0 0% 10%;
     
-    /* Gentle surfaces */
-    --muted: 210 11% 98%;
-    --muted-foreground: 210 9% 55%;
+    /* Flat surfaces */
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
     
-    /* Soft primary - Light blue */
-    --primary: 210 100% 56%;
+    /* Flat primary - solid blue */
+    --primary: 210 100% 50%;
     --primary-foreground: 0 0% 100%;
     
-    /* Minimal secondary */
-    --secondary: 210 11% 98%;
-    --secondary-foreground: 210 11% 15%;
+    /* Flat secondary */
+    --secondary: 0 0% 92%;
+    --secondary-foreground: 0 0% 10%;
     
-    /* Subtle accent */
-    --accent: 210 11% 97%;
-    --accent-foreground: 210 11% 15%;
+    /* Flat accent */
+    --accent: 0 0% 94%;
+    --accent-foreground: 0 0% 10%;
     
-    /* Gentle alert colors */
-    --destructive: 0 65% 65%;
+    /* Flat destructive */
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     
-    /* Light borders */
-    --border: 210 12% 93%;
-    --input: 210 12% 96%;
-    --ring: 210 100% 56%;
+    /* Flat borders - visible and clean */
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 210 100% 50%;
     
-    /* Popover system */
+    /* Flat popover */
     --popover: 0 0% 100%;
-    --popover-foreground: 210 11% 15%;
+    --popover-foreground: 0 0% 10%;
     
-    /* Clean radius */
-    --radius: 0.5rem;
+    /* Sharp corners for flat design */
+    --radius: 0.25rem;
     
-    /* Soft document status colors */
-    --status-critical: 0 65% 70%;
-    --status-warning: 45 85% 65%;
-    --status-safe: 120 40% 60%;
-    --status-expired: 210 8% 35%;
+    /* Flat status colors - solid, no gradients */
+    --status-critical: 0 84% 60%;
+    --status-warning: 45 100% 50%;
+    --status-safe: 142 71% 45%;
+    --status-expired: 0 0% 45%;
     
-    /* Smooth transitions */
-    --transition: all 0.2s ease-in-out;
+    /* Instant transitions for flat design */
+    --transition: all 0.15s ease;
   }
 
   .dark {
-    /* Soft dark backgrounds */
-    --background: 210 11% 7%;
-    --foreground: 210 11% 93%;
+    /* Flat dark backgrounds */
+    --background: 0 0% 10%;
+    --foreground: 0 0% 98%;
     
-    /* Gentle dark cards */
-    --card: 210 11% 9%;
-    --card-foreground: 210 11% 93%;
+    /* Flat dark cards */
+    --card: 0 0% 14%;
+    --card-foreground: 0 0% 98%;
     
-    /* Muted dark surfaces */
-    --muted: 210 11% 12%;
-    --muted-foreground: 210 9% 65%;
+    /* Flat dark surfaces */
+    --muted: 0 0% 18%;
+    --muted-foreground: 0 0% 65%;
     
-    /* Soft primary in dark */
-    --primary: 210 100% 60%;
-    --primary-foreground: 210 11% 7%;
+    /* Flat primary in dark */
+    --primary: 210 100% 55%;
+    --primary-foreground: 0 0% 10%;
     
-    /* Dark secondary */
-    --secondary: 210 11% 12%;
-    --secondary-foreground: 210 11% 93%;
+    /* Flat dark secondary */
+    --secondary: 0 0% 18%;
+    --secondary-foreground: 0 0% 98%;
     
-    /* Dark accent */
-    --accent: 210 11% 12%;
-    --accent-foreground: 210 11% 93%;
+    /* Flat dark accent */
+    --accent: 0 0% 20%;
+    --accent-foreground: 0 0% 98%;
     
-    /* Gentle dark destructive */
-    --destructive: 0 50% 55%;
+    /* Flat dark destructive */
+    --destructive: 0 84% 55%;
     --destructive-foreground: 0 0% 100%;
     
-    /* Soft dark borders */
-    --border: 210 11% 15%;
-    --input: 210 11% 15%;
+    /* Flat dark borders */
+    --border: 0 0% 22%;
+    --input: 0 0% 22%;
+    --ring: 210 100% 55%;
     
-    /* Dark popover */
-    --popover: 210 11% 9%;
-    --popover-foreground: 210 11% 93%;
+    /* Flat dark popover */
+    --popover: 0 0% 14%;
+    --popover-foreground: 0 0% 98%;
     
-    /* Soft dark status colors */
-    --status-critical: 0 50% 60%;
-    --status-warning: 45 70% 60%;
-    --status-safe: 120 35% 55%;
-    --status-expired: 210 8% 45%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Flat dark status colors */
+    --status-critical: 0 84% 55%;
+    --status-warning: 45 100% 55%;
+    --status-safe: 142 71% 50%;
+    --status-expired: 0 0% 50%;
+    
+    /* Sidebar flat dark */
+    --sidebar-background: 0 0% 12%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 210 100% 55%;
+    --sidebar-primary-foreground: 0 0% 10%;
+    --sidebar-accent: 0 0% 18%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 22%;
+    --sidebar-ring: 210 100% 55%;
   }
 }
 
@@ -150,43 +123,47 @@
 }
 
 @layer components {
-  /* Gentle status indicators */
+  /* Flat status indicators - solid colors, no shadows */
   .status-critical {
     background: hsl(var(--status-critical));
     color: white;
+    border: 2px solid hsl(var(--status-critical));
   }
 
   .status-warning {
     background: hsl(var(--status-warning));
-    color: hsl(210 11% 15%);
+    color: white;
+    border: 2px solid hsl(var(--status-warning));
   }
 
   .status-safe {
     background: hsl(var(--status-safe));
     color: white;
+    border: 2px solid hsl(var(--status-safe));
   }
 
   .status-expired {
     background: hsl(var(--status-expired));
     color: white;
+    border: 2px solid hsl(var(--status-expired));
   }
 
-  /* Smooth animations */
+  /* Minimal animations for flat design */
   .animate-fade-in {
-    animation: fadeIn 0.3s ease-out;
+    animation: fadeIn 0.2s ease-out;
   }
 
   .animate-slide-up {
-    animation: slideUp 0.4s ease-out;
+    animation: slideUp 0.3s ease-out;
   }
 
-  /* Minimal components */
-  .card-minimal {
-    @apply bg-card border border-border rounded-lg shadow-sm;
+  /* Flat components - borders instead of shadows */
+  .card-flat {
+    @apply bg-card border-2 border-border rounded;
   }
 
-  .button-minimal {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200;
+  .button-flat {
+    @apply bg-primary text-primary-foreground hover:bg-primary/80 transition-colors duration-150 border-2 border-primary;
   }
 }
 
